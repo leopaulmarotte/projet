@@ -122,5 +122,5 @@ def graph_from_file(filename):
                 G.add_edge(node1, node2, power_min, dist)
             else : 
                 G.add_edge(node1, node2, power_min)
-
+h
     return G
