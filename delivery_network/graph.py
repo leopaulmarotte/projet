@@ -55,8 +55,16 @@ class Graph:
         dist: numeric (int or float), optional
             Distance between node1 and node2 on the edge. Default is 1.
         """
+        
+        if node1 not in self.graph:
+            self.graph[node1] = []
+            self.nb_nodes +=1
+        if node2 not in self.graph:
+            self.graph[nodes2] +[]
+            self.nb_nodes +=1
+        
         self.nb_edges +=1
-        self.graph[node1].append((node2, power_min, dist)) h
+        self.graph[node1].append((node2, power_min, dist))
         self.graph[node2].append((node1, power_min, dist))
        
 
