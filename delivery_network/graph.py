@@ -56,7 +56,7 @@ class Graph:
             Distance between node1 and node2 on the edge. Default is 1.
         """
         self.nb_edges +=1
-        self.graph[node1].append((node2, power_min, dist))
+        self.graph[node1].append((node2, power_min, dist)) h
         self.graph[node2].append((node1, power_min, dist))
        
 
