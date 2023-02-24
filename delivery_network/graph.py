@@ -60,7 +60,7 @@ class Graph:
             self.graph[node1] = []
             self.nb_nodes +=1
         if node2 not in self.graph:
-            self.graph[nodes2] +[]
+            self.graph[nodes2] = []
             self.nb_nodes +=1
         
         self.nb_edges +=1
@@ -83,6 +83,12 @@ class Graph:
         The result should be a set of frozensets (one per component), 
         For instance, for network01.in: {frozenset({1, 2, 3}), frozenset({4, 5, 6, 7})}
         """
+        
+
+
+
+
+
         return set(map(frozenset, self.connected_components()))
     
     def min_power(self, src, dest):
