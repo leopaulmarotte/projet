@@ -75,7 +75,14 @@ class Graph:
     
 
     def connected_components(self):
-        raise NotImplementedError
+        
+        
+    def exploration (self, s, visited):
+        l = []
+        for i in self.graph[s]:
+            
+
+        
 
 
     def connected_components_set(self):
@@ -83,9 +90,8 @@ class Graph:
         The result should be a set of frozensets (one per component), 
         For instance, for network01.in: {frozenset({1, 2, 3}), frozenset({4, 5, 6, 7})}
         """
-        
-
-
+    
+    
 
 
 
@@ -119,21 +125,20 @@ def graph_from_file(filename):
         An object of the class Graph with the graph from file_name.
     """
    
-    with open(filename) as file :
-        ligne1 = file.readline().split()
-        n = int(ligne1[0])
-        m = int(ligne1[1])
-        nodes = [i for i in range(1, n+1)]
-        G = Graph(nodes)
-        for i in range (m):
-            lignei = file.readline().split()
-            node1 = int(lignei[0])
-            node2 = int(lignei[1])
-            power_min = int(lignei[2])
-            if len(lignei) > 3:
-                dist = int(lignei[3])
-            
-                G.add_edge(node1, node2, power_min, dist)
-            else : 
-                G.add_edge(node1, node2, power_min)
-    return G
+    with open(filename, "r") as file:
+         n, m = map(int, file.readline().split())
+         g = Graph(range(1, n+1))
+         for _ in range(m):
+             edge = list(map(int, file.readline().split()))
+             if len(edge) == 3:
+                 node1, node2, power_min = edge
+                 g.add_edge(node1, node2, power_min) # will add dist=1 by default
+             elif len(edge) == 4:
+                 node1, node2, power_min, dist = edge
+                 g.add_edge(node1, node2, power_min, dist)
+             else:
+                 raise Exception("Format incorrect")
+     return g
+
+
+    
