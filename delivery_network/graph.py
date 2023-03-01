@@ -71,15 +71,43 @@ class Graph:
     
 
     def get_path_with_power(self, src, dest, power):
-        raise NotImplementedError
-    
+        
+        def dfs2(noeud):
+            composante = [src]
+            for voisin in self.graph[noeud]:
+                pmin = voisin[1]
+                voisin = voisin[0]
 
+                while voisin != dest : 
+                    if pmin >= power :
+                        composante += dfs2(voisin)
+                    else : 
+
+            return composante
+        return(dfs2(src))
+
+
+
+    
+        
     def connected_components(self):
+        liste_composante = []
+        noeud_visite = {noeud:False for noeud in self.nodes}
+
+        def dfs(noeud):
+            composante = [noeud]
+            for voisin in self.graph[noeud]:
+                voisin = voisin[0]
+                if not noeud_visite[voisin]:
+                    noeud_visite[voisin] = True
+                    composante += dfs(voisin)
+            return composante
         
-        
-    def exploration (self, s, visited):
-        l = []
-        for i in self.graph[s]:
+        for noeud in self.nodes:
+            if not noeud_visite[noeud]:
+                liste_composante.append(dfs(noeud))
+
+        return liste_composante
             
 
         
@@ -138,7 +166,7 @@ def graph_from_file(filename):
                  g.add_edge(node1, node2, power_min, dist)
              else:
                  raise Exception("Format incorrect")
-     return g
+    return g
 
 
     
