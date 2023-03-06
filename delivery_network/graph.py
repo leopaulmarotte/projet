@@ -70,21 +70,40 @@ class Graph:
 
     
 
-    def get_path_with_power(self, src, dest, power):
+def get_path_with_power(self, src, dest, power):
         
-        def dfs2(noeud):
-            composante = [src]
-            for voisin in self.graph[noeud]:
-                pmin = voisin[1]
-                voisin = voisin[0]
+d#ef parcours_largeur(G,s):
+    statut = {} 
+    successeurs = {} 
+    predecesseurs = {} 
+    distance = {}
 
-                while voisin != dest : 
-                    if pmin >= power :
-                        composante += dfs2(voisin)
-                    else : 
+    for clé in self.nodes:    
 
-            return composante
-        return(dfs2(src))
+        statut[cle] = 0 
+    P = [src]
+    predecesseurs[src]='' 
+    distance[src] = 0 
+    while len(P)>0:
+        sommet = P.pop(0)
+
+        statut[sommet] = 1
+        voisins = [ x for x in self.graph[sommet] if statut[x]==0]
+        voisins1 = voisins[0]
+        if voisins[1] >= power : 
+            successeurs[sommet] = voisins 
+            for v in voisins:
+                statut[v] = 1
+                predecesseurs[v] = sommet
+                distance[v] = 1 + distance[sommet]
+        P += voisins 
+   
+
+    def fonction_chemin(src, dest, t):
+        while dest not in successeurs[dest]: 
+    return successeurs, predecesseurs, distance
+
+    #puis rajouter deuxième fonction après qui regarde dans la liste de liste si on a une liste qui contient départ et arrivée à l'intérieur
 
 
 
