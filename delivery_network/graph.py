@@ -70,8 +70,21 @@ class Graph:
 
     
 
-def get_path_with_power(self, src, dest, power):
-        
+    def get_path_with_power(self, src, dest, power):
+        noeud_visite = {noeud:False for noeud in self.nodes}
+
+        def recherche_de_chemin(noeud, chemin):
+            if noeud == dest :
+                return chemin
+            for voisin in self.graph[noeud]:
+                voisin, power_min, dist = voisin
+                if not noeud_visite[voisin] and power_min <= power:
+                    noeud_visite[voisin] = True
+                    resultat = recherche_de_chemin(voisin, chemin + [voisin])
+                    if resultat is not None :
+                        return resultat
+            return None
+        return recherche_de_chemin(src, [src])
 
   
    
@@ -118,7 +131,52 @@ def get_path_with_power(self, src, dest, power):
         """
         Should return path, min_power. 
         """
-        raise NotImplementedError
+        
+        def get_path_with_power(self, src, dest, power):
+            noeud_visite = {noeud:False for noeud in self.nodes}
+
+            def recherche_de_chemin(noeud, chemin):
+                if noeud == dest :
+                    return chemin
+                for voisin in self.graph[noeud]:
+                    voisin, power_min, dist = voisin
+                    if not noeud_visite[voisin] and power_min <= power:
+                        noeud_visite[voisin] = True
+                        resultat = recherche_de_chemin(voisin, chemin + [voisin])
+                        if resultat is not None :
+                            return resultat
+                return None
+            return recherche_de_chemin(src, [src])
+
+
+
+        puissances = []
+        for noeuds in self.nodes :
+            for noeuds in self.graph[noeuds] :
+                puissances.append(noeuds[2])
+
+        puissances = frozenset(puissances)
+        puissances = list(puissances)
+        puissances = sorted(puissances)
+
+    
+        a = 0
+        b = len(puissances) - 1
+        if get_path_with_power(self, src, dest, puissances[b]) is None:
+            return None
+            
+        else :
+            while a <= b:
+                m = (a + b) // 2
+                if get_path_with_power(self,src, dest, puissances[m]) is not None:
+                    b = m -1
+                else : 
+                    a = m + 1
+                   
+            
+
+        return (get_path_with_power(self, src, dest, puissances[m]), puissances[m])
+
 
 
 def graph_from_file(filename):
