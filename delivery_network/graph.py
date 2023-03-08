@@ -152,8 +152,8 @@ class Graph:
 
         puissances = []
         for noeuds in self.nodes :
-            for noeuds in self.graph[noeuds] :
-                puissances.append(noeuds[2])
+            for noeuds1 in self.graph[noeuds] :
+                puissances.append(noeuds1[1])
 
         puissances = frozenset(puissances)
         puissances = list(puissances)
