@@ -154,25 +154,40 @@ class Graph:
         for noeuds in self.nodes :
             for noeuds1 in self.graph[noeuds] :
                 puissances.append(noeuds1[1])
+        
+
+        
 
         puissances = frozenset(puissances)
         puissances = list(puissances)
         puissances = sorted(puissances)
+
+        print(puissances)
 
     
         a = 0
         b = len(puissances) - 1
         if get_path_with_power(self, src, dest, puissances[b]) is None:
             return None
-            
+        
         else :
-            while a <= b:
+            while a < b:
                 m = (a + b) // 2
-                if get_path_with_power(self,src, dest, puissances[m]) is not None:
-                    b = m -1
-                else : 
+                print(m)
+                if get_path_with_power(self,src, dest, puissances[m]) is None:
+                    
                     a = m + 1
-                   
+                    print(a,b)
+                
+                else : 
+                    
+                    b = m 
+                    print(a,b)
+        m = b
+        print(a,b)
+        print(m)
+        print(puissances[m] )         
+                
             
 
         return (get_path_with_power(self, src, dest, puissances[m]), puissances[m])
