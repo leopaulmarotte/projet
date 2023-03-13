@@ -1,29 +1,8 @@
 class Graph:
-    """
-    A class representing graphs as adjacency lists and implementing various algorithms on the graphs. Graphs in the class are not oriented. 
-    Attributes: 
-    -----------
-    nodes: NodeType
-        A list of nodes. Nodes can be of any immutable type, e.g., integer, float, or string.
-        We will usually use a list of integers 1, ..., n.
-    graph: dict
-        A dictionnary that contains the adjacency list of each node in the form
-        graph[node] = [(neighbor1, p1, d1), (neighbor1, p1, d1), ...]
-        where p1 is the minimal power on the edge (node, neighbor1) and d1 is the distance on the edge
-    nb_nodes: int
-        The number of nodes.
-    nb_edges: int
-        The number of edges. 
-    """
+   
 
     def __init__(self, nodes=[]):
-        """
-        Initializes the graph with a set of nodes, and no edges. 
-        Parameters: 
-        -----------
-        nodes: list, optional
-            A list of nodes. Default is empty.
-        """
+      
         self.nodes = nodes
         self.graph = dict([(n, []) for n in nodes])
         self.nb_nodes = len(nodes)
@@ -105,14 +84,7 @@ class Graph:
 
 
     def connected_components_set(self):
-        """
-        The result should be a set of frozensets (one per component), 
-        For instance, for network01.in: {frozenset({1, 2, 3}), frozenset({4, 5, 6, 7})}
-        """
     
-    
-
-
 
         return set(map(frozenset, self.connected_components()))
     
@@ -212,6 +184,78 @@ def graph_from_file(filename):
                     raise Exception("Format incorrect")
     return g
 
+class DisjointSet:
+    parent = {}
+ 
+    # effectue l'opération MakeSet
+    def makeSet(self, n):
+        # créer `n` ensembles disjoints (un pour chaque sommet)
+        for i in range(n):
+            self.parent[i] = i
+ 
+    # Trouver la racine de l'ensemble auquel appartient l'élément `k`
+    def find(self, k):
+        # si `k` est racine
+        if self.parent[k] == k:
+            return k
+ 
+        # se reproduisent pour le parent jusqu'à ce que nous trouvions la racine
+        return self.find(self.parent[k])
+ 
+    # Perform Union de deux sous-ensembles
+    def union(self, a, b):
+        # trouver la racine des ensembles auxquels appartiennent les éléments `x` et `y`
+        x = self.find(a)
+        y = self.find(b)
+ 
+        self.parent[x] = y
+ 
+ 
+# Fonction pour construire MST en utilisant l'algorithme de Kruskal
+def Kruskal(edges, n):
+ 
+    # stocke les arêtes présentes dans MST
+    MST = []
+ 
+    # Initialise la classe `DisjointSet`.
+    # Créer un ensemble singleton pour chaque élément de l'univers.
+    ds = DisjointSet()
+    ds.makeSet(n)
+ 
+    index = 0
+ 
+    # trier les arêtes par poids croissant
+    edges.sort(key=lambda x: x[2])
 
+    l = []
+    for i in g.nodes :
+        t = g.graph[i]
+        l.append([t[2],min(t[0],t[1]),max(t[0],t[1])])
+        sorted(l)
+        
+        
+
+
+
+ 
+    # MST contient exactement les arêtes `V-1`
+    while len(MST) != n - 1:
+ 
+        # considère le bord suivant avec un poids minimum du graph
+        (src, dest, weight) = edges[index]
+        index = index + 1
+ 
+        # trouver la racine des ensembles auxquels deux extrémités
+        # sommets de l'arête suivante appartiennent
+        x = ds.find(src)
+        y = ds.find(dest)
+ 
+        # si les deux points de terminaison ont des parents différents, ils appartiennent à
+        # différents composants connectés et peuvent être inclus dans MST
+        if x != y:
+            MST.append((src, dest, weight))
+            ds.union(x, y)
+ 
+    return MST
  
     
