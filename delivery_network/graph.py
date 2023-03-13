@@ -212,48 +212,49 @@ class DisjointSet:
  
  
 # Fonction pour construire MST en utilisant l'algorithme de Kruskal
-def Kruskal(edges, n):
+def Kruskal(g):
  
     # stocke les arêtes présentes dans MST
     MST = []
- 
+    n = g.nb_nodes
     # Initialise la classe `DisjointSet`.
     # Créer un ensemble singleton pour chaque élément de l'univers.
     ds = DisjointSet()
     ds.makeSet(n)
  
     index = 0
- 
-    # trier les arêtes par poids croissant
-    edges.sort(key=lambda x: x[2])
 
-    l = []
+    edges = []
     for i in g.nodes :
-        t = g.graph[i]
-        l.append([t[2],min(t[0],t[1]),max(t[0],t[1])])
-        sorted(l)
+        for t in g.graph[i]:
         
         
-
-
-
+            edges.append((t[1],min([i,t[0]]),max([i,t[0]])))
+        
+    print(edges)
+    edges = sorted(edges)
+    F = frozenset(edges)
+    edges = list(F)
+    
+    print(edges)
+        
+        
  
-    # MST contient exactement les arêtes `V-1`
+    #there are n nodes, so our MST must have n - 1 edges
     while len(MST) != n - 1:
  
         # considère le bord suivant avec un poids minimum du graph
-        (src, dest, weight) = edges[index]
+        (src, dest, power) = edges[index]
         index = index + 1
  
-        # trouver la racine des ensembles auxquels deux extrémités
-        # sommets de l'arête suivante appartiennent
+        # 
         x = ds.find(src)
         y = ds.find(dest)
  
         # si les deux points de terminaison ont des parents différents, ils appartiennent à
         # différents composants connectés et peuvent être inclus dans MST
         if x != y:
-            MST.append((src, dest, weight))
+            MST.append((src, dest, power))
             ds.union(x, y)
  
     return MST
