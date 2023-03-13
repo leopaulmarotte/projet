@@ -190,7 +190,7 @@ class DisjointSet:
     # effectue l'opération MakeSet
     def makeSet(self, n):
         # créer `n` ensembles disjoints (un pour chaque sommet)
-        for i in range(n):
+        for i in range(1,n+1):
             self.parent[i] = i
  
     # Trouver la racine de l'ensemble auquel appartient l'élément `k`
@@ -217,6 +217,7 @@ def Kruskal(g):
     # stocke les arêtes présentes dans MST
     MST = []
     n = g.nb_nodes
+    print(n)
     # Initialise la classe `DisjointSet`.
     # Créer un ensemble singleton pour chaque élément de l'univers.
     ds = DisjointSet()
@@ -231,20 +232,28 @@ def Kruskal(g):
         
             edges.append((t[1],min([i,t[0]]),max([i,t[0]])))
         
-    print(edges)
-    edges = sorted(edges)
-    F = frozenset(edges)
-    edges = list(F)
     
-    print(edges)
+    
+    F = frozenset(edges)
+    edges1 = list(F)
+    edges1 = sorted(edges1)
+    
+    edgesf = []
+    for i in range(len(edges1)):
+        edges2 = list(edges1[i])
         
+        edges2.reverse()
         
+        edgesf.append(edges2)
+    print(edgesf)
+        
+  
  
     #there are n nodes, so our MST must have n - 1 edges
     while len(MST) != n - 1:
  
         # considère le bord suivant avec un poids minimum du graph
-        (src, dest, power) = edges[index]
+        (src, dest, power) = edgesf[index]
         index = index + 1
  
         # 
