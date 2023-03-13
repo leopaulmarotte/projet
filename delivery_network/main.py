@@ -1,4 +1,4 @@
-from graph import Graph, graph_from_file
+from graph import Graph, graph_from_file, kruskal
 import time
 from time import perf_counter
 
@@ -26,7 +26,7 @@ t1 = time.perf_counter()
 
 #for i in range(3):
     
-g.kruskal(src[1],dest[1])
+kruskal(g)
 
 
 

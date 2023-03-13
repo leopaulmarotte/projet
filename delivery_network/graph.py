@@ -1,21 +1,26 @@
-class union_find:
+class UnionFind:
+    def __init__(self, n):
+        """
+        Initialise la structure de données Union-Find avec n éléments,
+        chacun étant initialement dans sa propre partition.
+        """
+        self.parent = [k for k in range(n)] #tableau qui contient le parent de chaque élément, initialisé à lui-même
+        self.rank = [0]*n #stocke la hauteur (=le rang) de chaque arbre
 
-    def __init__(self, parent_node = {}):
-        self.parent_node = parent_node
+    def find(self, x): #trouver l'ensemble auquel x appartient en remontant la chaine de parents
+        if self.parent[x] != x: #si x n'est pas la racine, on continue 
+            self.parent[x] = self.find(self.parent[x]) #récursivité + on comprime pour être plus efficace
+        return self.parent[x]
 
-    def make_set(self, u):
-        for i in u:
-            self.parent_node[i] = i
-
-    def find(self, k):
-        if self.parent_node[k] == k:
-            return k
-        return self.find(self.parent_node[k])
-
-    def op_union(self, a, b):
-        x = self.find(a)
-        y = self.find(b)
-        self.parent_node[x] = y
+    def union(self, x, y): #relier les arbres
+        root_x, root_y = self.find(x), self.find(y) #on trouve les racines de x et y
+        if self.rank[root_x] < self.rank[root_y]:
+            self.parent[root_x] = root_y #on relie l'arbre de hauteur inférieur à la racine de l'arbre de rang supérieur 
+        elif self.rank[root_x] > self.rank[root_y]:
+            self.parent[root_y] = root_x
+        else:
+            self.parent[root_y] = root_x #si même rang, on les relie + on augmete le rang 
+            self.rank[root_x] += 1
 
 
 class Graph:
@@ -175,45 +180,29 @@ class Graph:
         shortest_path.insert(0,src)
         return(shortest_path)
 
-    def kruskal(self):
-
-        def del_occur(L):
-            LL = []
-            for i in L:
-                if not i in LL:
-                    LL.append(i)
-            return(LL)
-        
-        nb_nodes = self.nb_nodes
-        mst = Graph(range(1,nb_nodes+1))
-        
-        mst_union_find = union_find({})
-        mst_union_find.make_set(list(self.nodes))
-        edge_list = []
-        for node1 in self.nodes:
-            for node2 in self.graph[node1]:
-                node2,power_1_2 = node2[0],node2[1]
-                edge_list.append([power_1_2,max(node1,node2),min(node1,node2)])
-        edge_list_sorted_unic = del_occur(sorted(edge_list))
-        final_edge_list = []
-        for edge in edge_list_sorted_unic:
-            edge.reverse()
-            final_edge_list.append(edge)
-        
-        for edge in final_edge_list:
-            node1,node2,power = edge
-            if mst_union_find.find(node1) != mst_union_find.find(node2):
-                mst.add_edge(node1, node2, power)
-                mst_union_find.op_union(node1, node2)
-        
-        return(mst)
+    
+      
     
     def f1(self, src, dest):
         g = self.kruskal()
         t = g.min_power(src, dest)
         return t
 
+def kruskal(g):
 
+        edges=[]
+        sorted_edges=[]
+        for node in g.graph:
+            for connected_node, power, dist in g.graph[node]:
+                edges.append((power,node,connected_node))
+        sorted_edges=sorted(edges, key=lambda l: l[0]) #on trie les arêtes par poids croissant
+        uf = UnionFind(g.nb_nodes + max(g.nodes)) #on crée une structure d'unionfind, on rajoute le dernier sinon on est out of range dans la suite de la fonction
+        g_mst = Graph() #on va créer l'arbre couvrant de poids minimal
+        for power, node1, node2 in sorted_edges:
+            if uf.find(node1)!= uf.find(node2): #on vérifie si ça ne crée pas de cycle 
+                g_mst.add_edge(node1, node2, power) #on l'ajoute à l'arbre couvrant 
+                uf.union(node1, node2) #on les lie 
+        return g_mst 
 
 def graph_from_file(filename):
 
