@@ -169,7 +169,7 @@ class Graph:
 
 # Question 6
 
-    def min_power(self, src, dest):
+    def min_power(self, src, dest): #pour le kruskal, on peut enlever la recherche binaire, il faut ,optimiser min power et en faire une niuvelle
 
         def binary_search(self,L): #L is a liste
             left,right = 0,(len(L)-1)
@@ -193,6 +193,7 @@ class Graph:
             return None
         else:
             return binary_search(self,power_list)
+    
 
 
 # Question 7 : Bonus
