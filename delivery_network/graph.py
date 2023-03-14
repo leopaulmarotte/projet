@@ -1,26 +1,27 @@
-class UnionFind:
-    def __init__(self, n):
-        """
-        Initialise la structure de données Union-Find avec n éléments,
-        chacun étant initialement dans sa propre partition.
-        """
-        self.parent = [k for k in range(n)] #tableau qui contient le parent de chaque élément, initialisé à lui-même
-        self.rank = [0]*n #stocke la hauteur (=le rang) de chaque arbre
+import time
+from time import perf_counter
 
-    def find(self, x): #trouver l'ensemble auquel x appartient en remontant la chaine de parents
-        if self.parent[x] != x: #si x n'est pas la racine, on continue 
-            self.parent[x] = self.find(self.parent[x]) #récursivité + on comprime pour être plus efficace
-        return self.parent[x]
 
-    def union(self, x, y): #relier les arbres
-        root_x, root_y = self.find(x), self.find(y) #on trouve les racines de x et y
-        if self.rank[root_x] < self.rank[root_y]:
-            self.parent[root_x] = root_y #on relie l'arbre de hauteur inférieur à la racine de l'arbre de rang supérieur 
-        elif self.rank[root_x] > self.rank[root_y]:
-            self.parent[root_y] = root_x
-        else:
-            self.parent[root_y] = root_x #si même rang, on les relie + on augmete le rang 
-            self.rank[root_x] += 1
+
+
+class union_find:
+
+    def __init__(self, parent_node = {}):
+        self.parent_node = parent_node
+
+    def make_set(self, u):
+        for i in u:
+            self.parent_node[i] = i
+
+    def find(self, k):
+        if self.parent_node[k] == k:
+            return k
+        return self.find(self.parent_node[k])
+
+    def op_union(self, a, b):
+        x = self.find(a)
+        y = self.find(b)
+        self.parent_node[x] = y
 
 
 class Graph:
@@ -42,7 +43,11 @@ class Graph:
         return output
 
     
-    
+# Question 1
+
+# We took the correction of the teacher because it was more clear than our version
+# Graph_from_file is at the end, out of the class Graph
+
     def add_edge(self, node1, node2, power_min, dist=1):
         if node1 not in self.graph:
             self.graph[node1] = []
@@ -57,6 +62,34 @@ class Graph:
         self.graph[node2].append((node1, power_min, dist))
         self.nb_edges += 1
 
+
+# Question 2
+
+    def connected_components(self):
+        components_list = []
+        visited_nodes = {node : False for node in self.nodes}
+
+        def exploration(node):
+            component = [node]
+            for neighbor in self.graph[node]:
+                neighbor = neighbor[0]
+                if not visited_nodes[neighbor]:
+                    visited_nodes[neighbor] = True
+                    component += exploration(neighbor)
+            return component
+        
+        for node in self.nodes:
+            if not visited_nodes[node]:
+                components_list.append(exploration(node))
+
+        return components_list
+
+
+    def connected_components_set(self):
+        return set(map(frozenset, self.connected_components()))
+
+
+# Question 3
 
     def get_path_with_power(self, src, dest, power):
         visited_nodes = {node : False for node in self.nodes}
@@ -79,57 +112,10 @@ class Graph:
         raise NotImplementedError
     
 
-    def connected_components(self):
-        components_list = []
-        visited_nodes = {node : False for node in self.nodes}
-
-        def exploration(node):
-            component = [node]
-            for neighbor in self.graph[node]:
-                neighbor = neighbor[0]
-                if not visited_nodes[neighbor]:
-                    visited_nodes[neighbor] = True
-                    component += exploration(neighbor)
-            return component
-        
-        for node in self.nodes:
-            if not visited_nodes[node]:
-                components_list.append(exploration(node))
-
-        return components_list
-
-        raise NotImplementedError
+# Question 4 : Already made
 
 
-    def connected_components_set(self):
-        return set(map(frozenset, self.connected_components()))
-    
-
-    def min_power(self, src, dest):
-        power_list = []
-
-        
-        def binary_search(self,L): #L is a liste
-            left,right = 0,(len(L)-1)
-            while left != right:
-                middle = (left+right)//2
-                path = self.get_path_with_power( src, dest, L[middle])
-                if path == None:
-                    left = middle+1
-                else:
-                    right = middle
-            return(path,L[left])
-
-        for node in self.nodes:
-            for neighbor in self.graph[node]:
-                power_list.append(neighbor[1])
-        F = frozenset(power_list)
-        power_list = sorted(list(F))
-        power_max = power_list[-1]
-        if self.get_path_with_power(src, dest, power_max) == None: #to avoid the case where there is no path
-            return None
-        else:
-            return binary_search(self,power_list)
+# Question 5 : Bonus
 
     def Dijkstra(self,src,dest,power):
         infinity = 1000000000000
@@ -180,29 +166,89 @@ class Graph:
         shortest_path.insert(0,src)
         return(shortest_path)
 
-    
-      
-    
-    def f1(self, src, dest):
-        g = self.kruskal()
-        t = g.min_power(src, dest)
-        return t
 
-def kruskal(g):
+# Question 6
 
-        edges=[]
-        sorted_edges=[]
-        for node in g.graph:
-            for connected_node, power, dist in g.graph[node]:
-                edges.append((power,node,connected_node))
-        sorted_edges=sorted(edges, key=lambda l: l[0]) #on trie les arêtes par poids croissant
-        uf = UnionFind(g.nb_nodes + max(g.nodes)) #on crée une structure d'unionfind, on rajoute le dernier sinon on est out of range dans la suite de la fonction
-        g_mst = Graph() #on va créer l'arbre couvrant de poids minimal
-        for power, node1, node2 in sorted_edges:
-            if uf.find(node1)!= uf.find(node2): #on vérifie si ça ne crée pas de cycle 
-                g_mst.add_edge(node1, node2, power) #on l'ajoute à l'arbre couvrant 
-                uf.union(node1, node2) #on les lie 
-        return g_mst 
+    def min_power(self, src, dest):
+
+        def binary_search(self,L): #L is a liste
+            left,right = 0,(len(L)-1)
+            while left != right:
+                middle = (left+right)//2
+                path = self.get_path_with_power( src, dest, L[middle])
+                if path == None:
+                    left = middle+1
+                else:
+                    right = middle
+            return(path,L[left])
+
+        power_list = []
+        for node in self.nodes:
+            for neighbor in self.graph[node]:
+                power_list.append(neighbor[1])
+        F = frozenset(power_list)
+        power_list = sorted(list(F))
+        power_max = power_list[-1]
+        if self.get_path_with_power(src, dest, power_max) == None: #to avoid the case where there is no path
+            return None
+        else:
+            return binary_search(self,power_list)
+
+
+# Question 7 : Bonus
+
+
+# Question 8
+
+
+# Question 9 : Bonus
+
+
+# Question 10 : The function is in main.py
+
+
+# Question 11 : Bonus
+
+
+# Question 12
+
+    def kruskal(self):
+        g_mst = Graph(range(1,self.nb_nodes+1))
+        mst_union_find = union_find({})
+        mst_union_find.make_set(list(self.nodes))
+        edge_list = []
+        for node1 in self.nodes:
+            for node2 in self.graph[node1]:
+                node2,power_1_2 = node2[0],node2[1]
+                edge = [power_1_2,min(node1,node2),max(node1,node2)]
+                if not edge in edge_list:
+                    edge_list.append(edge)  
+        sorted_edge_list = sorted(edge_list)
+        for edge in sorted_edge_list:
+            power,node1,node2 = edge
+            if mst_union_find.find(node1) != mst_union_find.find(node2):
+                g_mst.add_edge(node1, node2, power)
+                mst_union_find.op_union(node1, node2)
+        return(g_mst)
+
+
+# Question 13
+
+# There are already 2 tests implemented
+# However : we had a problem with importing kruskal from graph so we did as it is done in previous tests and we did
+# g.kruskal() instead of doing kruskal(g) as it was previously computed
+# We implemented a new graph "my_network.06.py" whish successfuly passed the test
+
+
+# Question 14
+
+    def min_power_optimized(self, src, dest):
+        g_mst = self.kruskal()
+        return g_mst.min_power(src,dest)
+
+# Question 1 
+
+# Second part with Graph_from_file
 
 def graph_from_file(filename):
 
@@ -220,5 +266,25 @@ def graph_from_file(filename):
             else:
                 raise Exception("Format incorrect")
     return g
+ 
+
+
+
+def time_estimation(n):
+    with open("input/routes." + str(n) +  ".in", "r") as file:
+        time_est = 0
+        src = []
+        dest = []
+        a = map(int, file.readline().split())
+        for i in range(10): 
+            node1,node2,p = map(int, file.readline().split())
+            g = graph_from_file("input/network." +str(n) +".in")
+            t1 = time.perf_counter()
+           
+            opti = g.min_power_optimized(node1, node2)
+            t2 = time.perf_counter()
+            time_est += (t2 - t1)
+            
+    print(((list(a)[0])/10)* time_est)
 
 
