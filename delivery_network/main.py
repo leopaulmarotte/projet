@@ -6,7 +6,7 @@ data_path = "input/"
 file_name = "routes.1.in"
 
 
-time_estimation(2)
 
+print(time_estimation(1))
 
 

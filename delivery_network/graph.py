@@ -8,6 +8,7 @@ class union_find:
 
     def __init__(self, parent_node = {}):
         self.parent_node = parent_node
+        self.rank = [0]*len(parent_node) #stocke la hauteur (=le rang) de chaque arbre
 
     def make_set(self, u):
         for i in u:
@@ -19,9 +20,17 @@ class union_find:
         return self.find(self.parent_node[k])
 
     def op_union(self, a, b):
-        x = self.find(a)
-        y = self.find(b)
-        self.parent_node[x] = y
+        root_x, root_y = self.find(a), self.find(b)
+        self.parent_node[a] = b
+        if self.rank[root_x] < self.rank[root_y]:
+            self.parent[root_x] = root_y 
+        elif self.rank[root_x] > self.rank[root_y]:
+            self.parent_node[root_y] = root_x
+        else:
+            self.parent_node[root_y] = root_x 
+            self.rank[root_x] += 1
+
+
 
 
 class Graph:
@@ -205,7 +214,26 @@ class Graph:
 # Question 9 : Bonus
 
 
-# Question 10 : The function is in main.py
+# Question 10 : 
+
+def time_estimation(n):
+    with open("input/routes." + str(n) +  ".in", "r") as file:
+        time_est = 0
+        src = []
+        dest = []
+        a = map(int, file.readline().split())
+        for i in range(10): 
+            node1,node2,p = map(int, file.readline().split())
+            g = graph_from_file("input/network." +str(n) +".in")
+            t1 = time.perf_counter()
+           
+            opti = g.min_power(node1, node2)
+            t2 = time.perf_counter()
+            time_est += (t2 - t1)
+            
+    return (((list(a)[0])/10)* time_est)
+
+
 
 
 # Question 11 : Bonus
@@ -243,7 +271,7 @@ class Graph:
 
 # Question 14
 
-    def min_power_optimized(self, src, dest):
+    def min_power_kruskal(self, src, dest):
         g_mst = self.kruskal()
         return g_mst.min_power(src,dest)
 
@@ -269,23 +297,5 @@ def graph_from_file(filename):
     return g
  
 
-
-
-def time_estimation(n):
-    with open("input/routes." + str(n) +  ".in", "r") as file:
-        time_est = 0
-        src = []
-        dest = []
-        a = map(int, file.readline().split())
-        for i in range(10): 
-            node1,node2,p = map(int, file.readline().split())
-            g = graph_from_file("input/network." +str(n) +".in")
-            t1 = time.perf_counter()
-           
-            opti = g.min_power_optimized(node1, node2)
-            t2 = time.perf_counter()
-            time_est += (t2 - t1)
-            
-    print(((list(a)[0])/10)* time_est)
 
 
