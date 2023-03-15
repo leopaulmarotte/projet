@@ -8,7 +8,7 @@ class union_find:
 
     def __init__(self, parent_node = {}):
         self.parent_node = parent_node
-        self.rank = [0]*len(parent_node) #stocke la hauteur (=le rang) de chaque arbre
+        self.rank = [0]*len(parent_node) 
 
     def make_set(self, u):
         for i in u:
@@ -21,7 +21,7 @@ class union_find:
 
     def op_union(self, a, b):
         root_x, root_y = self.find(a), self.find(b)
-        self.parent_node[a] = b
+        
         if self.rank[root_x] < self.rank[root_y]:
             self.parent[root_x] = root_y 
         elif self.rank[root_x] > self.rank[root_y]:
@@ -29,9 +29,6 @@ class union_find:
         else:
             self.parent_node[root_y] = root_x 
             self.rank[root_x] += 1
-
-
-
 
 class Graph:
 
@@ -178,7 +175,7 @@ class Graph:
 
 # Question 6
 
-    def min_power(self, src, dest): #pour le kruskal, on peut enlever la recherche binaire, il faut ,optimiser min power et en faire une niuvelle
+    def min_power(self, src, dest):
 
         def binary_search(self,L): #L is a liste
             left,right = 0,(len(L)-1)
@@ -202,7 +199,6 @@ class Graph:
             return None
         else:
             return binary_search(self,power_list)
-    
 
 
 # Question 7 : Bonus
@@ -214,26 +210,7 @@ class Graph:
 # Question 9 : Bonus
 
 
-# Question 10 : 
-
-def time_estimation(n):
-    with open("input/routes." + str(n) +  ".in", "r") as file:
-        time_est = 0
-        src = []
-        dest = []
-        a = map(int, file.readline().split())
-        for i in range(10): 
-            node1,node2,p = map(int, file.readline().split())
-            g = graph_from_file("input/network." +str(n) +".in")
-            t1 = time.perf_counter()
-           
-            opti = g.min_power(node1, node2)
-            t2 = time.perf_counter()
-            time_est += (t2 - t1)
-            
-    return (((list(a)[0])/10)* time_est)
-
-
+# Question 10 : The function is in main.py
 
 
 # Question 11 : Bonus
@@ -271,7 +248,7 @@ def time_estimation(n):
 
 # Question 14
 
-    def min_power_kruskal(self, src, dest):
+    def min_power_optimized(self, src, dest):
         g_mst = self.kruskal()
         return g_mst.min_power(src,dest)
 
@@ -297,5 +274,22 @@ def graph_from_file(filename):
     return g
  
 
-
+def time_estimation(n):
+    with open("input/routes." + str(n) +  ".in", "r") as file:
+        time_est = 0
+        src = []
+        dest = []
+        a = map(int, file.readline().split())
+        for i in range(10): 
+            node1,node2,p = map(int, file.readline().split())
+            g = graph_from_file("input/network." +str(n) +".in")
+            t1 = time.perf_counter()
+           
+            opti = g.min_power_optimized(node1,node2)
+            t2 = time.perf_counter()
+            time_est += (t2 - t1)
+            print(time_est)
+        
+            
+    return (((list(a)[0])/10)* time_est)
 

@@ -1,4 +1,4 @@
-from graph import Graph, graph_from_file, time_estimation
+from graph import Graph, graph_from_file, time_estimation, union_find
 import time
 from time import perf_counter
 
@@ -7,6 +7,6 @@ file_name = "routes.1.in"
 
 
 
-print(time_estimation(1))
+print(time_estimation(2))
 
 
