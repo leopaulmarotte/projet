@@ -1,34 +1,34 @@
 import time
 from time import perf_counter
 
-
-
-
 class union_find:
 
     def __init__(self, parent_node = {}):
         self.parent_node = parent_node
-        self.rank = [0]*len(parent_node) 
+        self.rank = {}
 
     def make_set(self, u):
         for i in u:
             self.parent_node[i] = i
+            self.rank[i] = 0
 
     def find(self, k):
         if self.parent_node[k] == k:
             return k
         return self.find(self.parent_node[k])
 
-    def op_union(self, a, b):
-        root_x, root_y = self.find(a), self.find(b)
-        
-        if self.rank[root_x] < self.rank[root_y]:
-            self.parent[root_x] = root_y 
-        elif self.rank[root_x] > self.rank[root_y]:
-            self.parent_node[root_y] = root_x
+    def op_union(self, x, y):
+        root_of_x = self.find(x)
+        root_of_y = self.find(y)
+        if self.rank[root_of_x] < self.rank[root_of_y]:
+            self.parent_node[root_of_x] = root_of_y
+        elif self.rank[root_of_x] > self.rank[root_of_y]:
+            self.parent_node[root_of_y] = root_of_x
         else:
-            self.parent_node[root_y] = root_x 
-            self.rank[root_x] += 1
+            self.parent_node[root_of_y] = root_of_x
+            self.rank[root_of_x] += 1
+
+
 
 class Graph:
 
@@ -218,6 +218,8 @@ class Graph:
 
 # Question 12
 
+   
+
     def kruskal(self):
         g_mst = Graph(range(1,self.nb_nodes+1))
         mst_union_find = union_find({})
@@ -272,7 +274,6 @@ def graph_from_file(filename):
             else:
                 raise Exception("Format incorrect")
     return g
- 
 
 def time_estimation(n):
     with open("input/routes." + str(n) +  ".in", "r") as file:
@@ -284,12 +285,10 @@ def time_estimation(n):
             node1,node2,p = map(int, file.readline().split())
             g = graph_from_file("input/network." +str(n) +".in")
             t1 = time.perf_counter()
-           
-            opti = g.min_power_optimized(node1,node2)
+            opti = g.kruskal()
+            print(g)
             t2 = time.perf_counter()
             time_est += (t2 - t1)
-            print(time_est)
-        
             
-    return (((list(a)[0])/10)* time_est)
+    print(((list(a)[0])/10)* time_est)
 
