@@ -1,13 +1,13 @@
 import time
 from time import perf_counter
 
-class union_find:
+class union_find: # We create union-find class for kruskal algorithm
 
     def __init__(self, parent_node = {}):
-        self.parent_node = parent_node
+        self.parent_node = parent_node # Implementation with dictionary, initialized empty
         self.rank = {}
 
-    def make_set(self, u):
+    def make_set(self, u): # Initialization function 
         for i in u:
             self.parent_node[i] = i
             self.rank[i] = 0
@@ -53,9 +53,10 @@ class Graph:
 
 # We took the correction of the teacher because it was more clear than our version
 # Graph_from_file is at the end, out of the class Graph
+# Complexity in O(1)
 
     def add_edge(self, node1, node2, power_min, dist=1):
-        if node1 not in self.graph:
+        if node1 not in self.graph: # We check if node1, and node2 after, are already in the graph and if not, we add the nodes
             self.graph[node1] = []
             self.nb_nodes += 1
             self.nodes.append(node1)
@@ -64,24 +65,25 @@ class Graph:
             self.nb_nodes += 1
             self.nodes.append(node2)
 
-        self.graph[node1].append((node2, power_min, dist))
+        self.graph[node1].append((node2, power_min, dist)) # We create the edge between node1 and node2
         self.graph[node2].append((node1, power_min, dist))
         self.nb_edges += 1
 
 
 # Question 2
+# The complexity of this algorithm is O(V+E) where V = number of nodes and E = number of edges
 
     def connected_components(self):
         components_list = []
-        visited_nodes = {node : False for node in self.nodes}
+        visited_nodes = {node : False for node in self.nodes} # We need to know if we already visited the nodes or not
 
-        def exploration(node):
+        def exploration(node): # Depth first search algorithm
             component = [node]
             for neighbor in self.graph[node]:
                 neighbor = neighbor[0]
                 if not visited_nodes[neighbor]:
                     visited_nodes[neighbor] = True
-                    component += exploration(neighbor)
+                    component += exploration(neighbor) # If a node has not been visited, we add the neighbors of this node
             return component
         
         for node in self.nodes:
@@ -96,26 +98,25 @@ class Graph:
 
 
 # Question 3
+# Complexity in O(E * log(E))
 
     def get_path_with_power(self, src, dest, power):
-        visited_nodes = {node : False for node in self.nodes}
+        visited_nodes = {node : False for node in self.nodes} # We need to know which nodes have already been visited
         visited_nodes[src] = True
    
-        def finding_a_path(node, path):
+        def finding_a_path(node, path): # We need to have the path in argument for the recursivity
             if node == dest:
                 return path
             for neighbor in self.graph[node]:
                 neighbor, power_min, dist = neighbor[0], neighbor[1], neighbor[2]
-                if not visited_nodes[neighbor] and power_min <= power:
+                if not visited_nodes[neighbor] and power_min <= power: # We visit the neighbors of the node if they have not been visited yet and if power_min <= power
                     visited_nodes[neighbor] = True
-                    result = finding_a_path(neighbor, path+[neighbor])
+                    result = finding_a_path(neighbor, path+[neighbor]) # We build the path recursively, keeping it in memory
                     if result is not None:
                         return result
             return None
 
         return finding_a_path(src, [src])
-
-        raise NotImplementedError
     
 
 # Question 4 : Already made
@@ -125,11 +126,12 @@ class Graph:
 
     def Dijkstra(self,src,dest,power):
         infinity = 1000000000000
-        distance_dic = {node : infinity for node in self.nodes}
-        distance_dic[src] = 0
-        predecessor_dic = {None : node for node in self.nodes}
+        distance_dic = {node : infinity for node in self.nodes} # Initialization : at the beginning, no nodes are reached
+        distance_dic[src] = 0 # Except the source
+        predecessor_dic = {None : node for node in self.nodes} # We need to know the predecessor to create the path at the end
 
-        def finding_min(non_reached_nodes):
+
+        def finding_min(non_reached_nodes): # We find the node with the lowest distance among non visited nodes
             mini = infinity
             min_dts_node = -1
             for node in non_reached_nodes:
@@ -141,7 +143,7 @@ class Graph:
             else:
                 return min_dts_node
 
-        def power_and_dist_between_nodes(self,node1,node2):
+        def power_and_dist_between_nodes(self,node1,node2): # We update the distances if it is shorter and if the power_edge is lower than power_min
             for node in self.graph[node1]:
                 if node[0] == node2:
                     return(node[1],node[2])
@@ -152,23 +154,23 @@ class Graph:
                 distance_dic[node2] = distance_dic[node1] + dist_of_edge
                 predecessor_dic[node2] = node1
 
-        my_non_reached_nodes = [node for node in self.nodes]
-        while my_non_reached_nodes != []:
+        my_non_reached_nodes = [node for node in self.nodes]  # No nodes are reached at the beginning
+        while my_non_reached_nodes != []: # We repeat that until all nodes are reached
             nearest_neighbor = finding_min(my_non_reached_nodes)
             if nearest_neighbor == None:
-                my_non_reached_nodes = []
+                my_non_reached_nodes = [] 
             else:
-                my_non_reached_nodes.remove(nearest_neighbor)
+                my_non_reached_nodes.remove(nearest_neighbor) # We remove the node treated
                 for neighbor_of_nearest_neighbor in self.graph[nearest_neighbor]:
                     neighbor_of_nearest_neighbor = neighbor_of_nearest_neighbor[0]
-                    update_distances(nearest_neighbor, neighbor_of_nearest_neighbor)
+                    update_distances(nearest_neighbor, neighbor_of_nearest_neighbor) # We update all the distances
         shortest_path = []
         moving_node = dest
         while moving_node != src:
             if moving_node == None:
                 return("Pas de chemin possible")
             shortest_path.insert(0,moving_node)
-            moving_node = predecessor_dic[moving_node]
+            moving_node = predecessor_dic[moving_node] # We build the path using the predecessors
         shortest_path.insert(0,src)
         return(shortest_path)
 
@@ -177,7 +179,7 @@ class Graph:
 
     def min_power(self, src, dest):
 
-        def binary_search(self,L): #L is a liste
+        def binary_search(self,L): #L is a list
             left,right = 0,(len(L)-1)
             while left != right:
                 middle = (left+right)//2
@@ -201,40 +203,24 @@ class Graph:
             return binary_search(self,power_list)
 
 
-# Question 7 : Bonus
-
-
-# Question 8
-
-
-# Question 9 : Bonus
-
-
-# Question 10 : The function is in main.py
-
-
-# Question 11 : Bonus
-
 
 # Question 12
 
-   
-
     def kruskal(self):
-        g_mst = Graph(range(1,self.nb_nodes+1))
+        g_mst = Graph(range(1,self.nb_nodes+1)) # Initialization of our mst
         mst_union_find = union_find({})
-        mst_union_find.make_set(list(self.nodes))
+        mst_union_find.make_set(list(self.nodes)) # Initialization of our union-find structure to know if another edge create a cycle or not
         edge_list = []
-        for node1 in self.nodes:
+        for node1 in self.graph:
             for node2 in self.graph[node1]:
                 node2,power_1_2 = node2[0],node2[1]
                 edge = [power_1_2,min(node1,node2),max(node1,node2)]
                 if not edge in edge_list:
                     edge_list.append(edge)  
-        sorted_edge_list = sorted(edge_list)
+        sorted_edge_list = sorted(edge_list) # We have collected all the edges and make sure we did not take a edge twice, and sorted them by power
         for edge in sorted_edge_list:
             power,node1,node2 = edge
-            if mst_union_find.find(node1) != mst_union_find.find(node2):
+            if mst_union_find.find(node1) != mst_union_find.find(node2): # We added the edges only if it does not create a cycle
                 g_mst.add_edge(node1, node2, power)
                 mst_union_find.op_union(node1, node2)
         return(g_mst)
@@ -243,7 +229,6 @@ class Graph:
 # Question 13
 
 # There are already 2 tests implemented
-# However : we had a problem with importing kruskal from graph so we did as it is done in previous tests and we did
 # g.kruskal() instead of doing kruskal(g) as it was previously computed
 # We implemented a new graph "my_network.06.py" whish successfuly passed the test
 
@@ -252,7 +237,7 @@ class Graph:
 
     def min_power_optimized(self, src, dest):
         g_mst = self.kruskal()
-        return g_mst.min_power(src,dest)
+        return g_mst.min_power(src,dest) # We know that it only works with small graphs : we will improve it
 
 # Question 1 
 
@@ -275,20 +260,22 @@ def graph_from_file(filename):
                 raise Exception("Format incorrect")
     return g
 
+    
+# Question 10 
+
 def time_estimation(n):
-    with open("input/routes." + str(n) +  ".in", "r") as file:
+    with open("input/routes." + str(n) + ".in","r") as file:
         time_est = 0
         src = []
         dest = []
-        a = map(int, file.readline().split())
-        for i in range(10): 
+        a = map(int, file.readline().split()) # We save the amount of itineraries
+        for i in range(10): # Average with 10 itineraries
             node1,node2,p = map(int, file.readline().split())
-            g = graph_from_file("input/network." +str(n) +".in")
+            g = graph_from_file("input/network." + str(n) + ".in")
             t1 = time.perf_counter()
-            opti = g.kruskal()
-            print(g)
-            t2 = time.perf_counter()
-            time_est += (t2 - t1)
-            
-    print(((list(a)[0])/10)* time_est)
 
+            opti = g.min_power_optimized(node1,node2)
+            t2 = time.perf_counter()
+            time_est += (t2-t1)
+            print(time_est)
+    return(((list(a)[0])/10)*time_est)
