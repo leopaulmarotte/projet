@@ -15,4 +15,8 @@ g.add_edge(4,5,1)
 print(g)
 print(g.kruskal())
 
+g1 = graph_from_file("input/network.1.in")
+print(g1)
+print(g1.kruskal())
+
 #le résultat est cohérent
