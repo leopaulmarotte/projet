@@ -395,8 +395,35 @@ def routes_from_file(filename):
             line = list(map(int, file.readline().split()))
             city1, city2, gain = line
             routes[i]=(city1,city2, gain)
-    print(routes)
     return routes
 
 
 
+
+def pre_knapsack():
+    
+
+budget1 = 25*10**9
+
+def knapSack(budget, wt, val, n):
+ 
+    # Base Case
+    if n == 0 or budget == 0:
+        return 0
+ 
+    # If weight of the nth item is
+    # more than Knapsack of capacity W,
+    # then this item cannot be included
+    # in the optimal solution
+    if (wt[n-1] > W):
+        return knapSack(W, wt, val, n-1)
+ 
+    # return the maximum of two cases:
+    # (1) nth item included
+    # (2) not included
+    else:
+        return max(
+            val[n-1] + knapSack(
+                budget-wt[n-1], wt, val, n-1),
+            knapSack(budget, wt, val, n-1))
+ 

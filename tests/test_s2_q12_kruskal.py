@@ -18,7 +18,7 @@ g.add_edge(4,5,1)
 
 #g1 = graph_from_file("input/network.1.in")
 
-#print(new_minpower(g, 1, 4))
+#print(new_minpower(g, 3, 2))
 
 #le résultat est cohérent
 
@@ -37,7 +37,8 @@ def new_time_estimation(n):
             time_est += (t2-t1)
     print((a/10)*time_est)       
 
-new_time_estimation(9)
+new_time_estimation(4)
+# on met au max 1 seconde pour calculer la puissance minimale qu'il faut pour un trajet donné, quelle que soit la base de données.
 
 
 
