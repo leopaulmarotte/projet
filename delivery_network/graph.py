@@ -279,3 +279,21 @@ def time_estimation(n):
             time_est += (t2-t1)
             print(time_est)
     return(((list(a)[0])/10)*time_est)
+
+
+# LES CAMIONS
+
+def trucks_from_file(filename):
+
+    with open(filename, "r") as file:
+        n = int(file.readline())
+        
+        trucks = [(0,0)]*n
+        print(trucks)
+        for i in range(n):
+            line = list(map(int, file.readline().split()))
+            print(line)
+            power, cost = line
+            trucks[i]=(power,cost)
+            print(trucks)
+    return trucks
