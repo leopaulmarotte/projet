@@ -28,6 +28,36 @@ class union_find: # We create union-find class for kruskal algorithm
             self.parent_node[root_of_y] = root_of_x
             self.rank[root_of_x] += 1
 
+class node_objet:
+
+    def __init__(self, value):
+        self.value = value
+        self.next = None
+
+class queue:
+
+    def __init__(self):
+        self.head = None
+        self.tail = None
+
+    def is_empty(self):
+        return not self.head
+
+    def enqueue(self, new_node):
+        if self.is_empty():
+            self.head = new_node
+            self.tail = new_node
+        else:
+            self.tail.next = new_node
+            self.tail = new_node
+
+    def dequeue(self):
+        if self.is_empty():
+            return "You queue is empty"
+        else:
+            deleted_element = self.head.value
+            self.head = self.head.next
+            return(deleted_element)
 
 
 class Graph:
@@ -68,6 +98,7 @@ class Graph:
         self.graph[node1].append((node2, power_min, dist)) # We create the edge between node1 and node2
         self.graph[node2].append((node1, power_min, dist))
         self.nb_edges += 1
+
 
 
 # Question 2
@@ -235,9 +266,67 @@ class Graph:
 
 # Question 14
 
+def bfs(G):
+    deep_state = {node : None for node in G.nodes}
+    marked_node = {node : False for node in G.nodes}
+    father_power = {node : (None,1000000) for node in G.nodes}
+    root = G.nodes[0]
+    marked_node[root] = True
+    deep_state[root] = 0
+    root = node_objet(root)
+    Q = queue()
+    Q.enqueue(root)
+    while not Q.is_empty():
+        node = Q.dequeue()
+        for neighbor in G.graph[node]:
+            neighbor,power = neighbor[0],neighbor[1]
+            if not marked_node[neighbor]:
+                deep_state[neighbor] = deep_state[node] + 1
+                father_power[neighbor] = node,power
+                Q.enqueue(node_objet(neighbor))
+                marked_node[neighbor] = True
+    return(deep_state,father_power)
+
+
+def new_minpower(g_mst, src, dest):
+    power_min = 0
+    deep_level,father_power = bfs(g_mst)
+    if deep_level[src] < deep_level[dest]:
+        src,dest = dest,src
+    path_src_father = [src]
+    path_father_dest = [dest]
+    moving_node_src,moving_node_dest = src,dest
+    while deep_level[moving_node_src] != deep_level[dest]:
+        moving_node_src,power = father_power[moving_node_src]
+        power_min = max(power_min,power)
+        path_src_father.append(moving_node_src)
+    while moving_node_src != moving_node_dest:
+        moving_node_src,power_src = father_power[moving_node_src]
+        moving_node_dest,power_dest = father_power[moving_node_dest]
+        path_src_father.append(moving_node_src)
+        path_father_dest.append(moving_node_dest)
+        power_min = max(power_min,power_dest,power_src)
+    path_src_father = path_src_father[0:len(path_src_father)-1]
+    path_father_dest.reverse()
+    path = path_src_father + path_father_dest
+    return(path,power_min)
+    
+    
+
+
+
+
+
+
+
     def min_power_optimized(self, src, dest):
         g_mst = self.kruskal()
         return g_mst.min_power(src,dest) # We know that it only works with small graphs : we will improve it
+
+
+
+
+
 
 # Question 1 
 
@@ -279,6 +368,10 @@ def time_estimation(n):
             time_est += (t2-t1)
             print(time_est)
     return(((list(a)[0])/10)*time_est)
+ 
+
+
+
 
 
 # LES CAMIONS
@@ -304,4 +397,6 @@ def routes_from_file(filename):
             routes[i]=(city1,city2, gain)
     print(routes)
     return routes
+
+
 
