@@ -1,4 +1,4 @@
-from graph import Graph, graph_from_file, time_estimation, union_find, trucks_from_file
+from graph import Graph, graph_from_file, time_estimation, union_find, trucks_from_file, routes_from_file
 import time
 from time import perf_counter
 
@@ -7,4 +7,4 @@ from time import perf_counter
 
 
 
-trucks_from_file("input/trucks.0.in")
+routes_from_file("input/routes.1.in")

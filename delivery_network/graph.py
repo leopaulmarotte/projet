@@ -287,13 +287,21 @@ def trucks_from_file(filename):
 
     with open(filename, "r") as file:
         n = int(file.readline())
-        
         trucks = [(0,0)]*n
-        print(trucks)
         for i in range(n):
             line = list(map(int, file.readline().split()))
-            print(line)
             power, cost = line
             trucks[i]=(power,cost)
-            print(trucks)
     return trucks
+
+def routes_from_file(filename):
+    with open(filename, "r") as file:
+        n = int(file.readline())
+        routes = [(0,0,0)]*n
+        for i in range(n):
+            line = list(map(int, file.readline().split()))
+            city1, city2, gain = line
+            routes[i]=(city1,city2, gain)
+    print(routes)
+    return routes
+
