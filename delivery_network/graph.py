@@ -397,11 +397,15 @@ def routes_from_file(filename):
             routes[i]=(city1,city2, gain)
     return routes
 
+def cost_routes(n, trucks): #on veut rajouter le coût pour chaque trajet d'un fichier routes
+                            #on va le faire pour un fichier trucks donnés + il serait pas mal de savoir quel camion coüvre le teajet (indice du camion dans la liste des camions)
+    
+
 
 
 
 def pre_knapsack():
-    
+
 
 budget1 = 25*10**9
 
