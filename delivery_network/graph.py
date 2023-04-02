@@ -124,7 +124,7 @@ class Graph:
 
 # Question 5 : Bonus
 
-    def Dijkstra(self,src,dest,power):
+    def dijkstra(self,src,dest,power):
         infinity = 1000000000000
         distance_dic = {node : infinity for node in self.nodes} # Initialization : at the beginning, no nodes are reached
         distance_dic[src] = 0 # Except the source
@@ -236,16 +236,6 @@ class Graph:
 # Question 14
 
     def min_power_optimized(self, src, dest):
-       
-       
-       
-       
-        
-        
-        
-        
-        
-        
         g_mst = self.kruskal()
         return g_mst.min_power(src,dest) # We know that it only works with small graphs : we will improve it
 
@@ -289,10 +279,3 @@ def time_estimation(n):
             time_est += (t2-t1)
             print(time_est)
     return(((list(a)[0])/10)*time_est)
-
-
-    # def bfs(g, root): #breadth-first search algorithm
-        # depth = {} #http://www.monlyceenumerique.fr/nsi_terminale/a/a1_algo_arbre.php#e3 + wikipedia parcours en largeur
-
-
-
