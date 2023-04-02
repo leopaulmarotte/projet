@@ -33,12 +33,9 @@ def new_time_estimation(n):
             t1 = time.perf_counter()
             print(t1)
             opti = new_minpower(g, node1, node2)
-            
             t2 = time.perf_counter()
-            print(t2)
             time_est += (t2-t1)
     print((a/10)*time_est)       
-    return((a/10)*time_est)
 
 new_time_estimation(9)
 
