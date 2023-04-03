@@ -417,7 +417,7 @@ def optimized_truck(liste_truck, power_min): # liste_truck is sorted by power
 
 
 
-def stupid_solution(graphe_filename,route_filename,truck_filename):
+def data(graphe_filename,route_filename,truck_filename):
     my_B = B
     G = graph_from_file(graphe_filename)
     list_routes = route_from_file(route_filename)
