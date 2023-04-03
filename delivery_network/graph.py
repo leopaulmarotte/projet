@@ -395,7 +395,6 @@ def routes_from_file(filename):
             line = list(map(int, file.readline().split()))
             city1, city2, gain = line
             routes[i]=(city1,city2, gain)
-    print(routes)
     return routes
 
 #def cost_routes(n, trucks): #on veut rajouter le coût pour chaque trajet d'un fichier routes
@@ -416,29 +415,28 @@ def optimized_truck(liste_truck, power_min): # liste_truck has already been sort
         good_truck = liste_truck[i]
     return(good_truck)
 
-def truck_affectation(G,list_route,list_trucks): # we create before the kruskal graph of the network corresponding to the route file
+def truck_affectation(G,list_route,list_trucks): # we create before the kruskal graph G of the network corresponding to the route file
     list_trucks.sort() #We sort the trucks by the first argument which is the power
     list_trucks_affected = []
     for route in list_route: #For each route, we will identify the cheapest truck to do it
         src,dest,profit = route
         path,power_min = new_minpower(G, src, dest)
         good_truck = optimized_truck(list_trucks, power_min)
-        list_trucks_affected.append([good_truck, route])
-    return(list_trucks_affected)
+        list_trucks_affected.append(good_truck + route) 
+    return(list_trucks_affected) #we return 5 elements : power, cost, city 1, city 2, profit
+
+def truck_affectation_ks(trucks_affected): # for the knapsack algorithm we just need the cost and profit of the trucks affectation
+    t = []
+    for element in trucks_affected :
+        power, cost, city1, city2, profit = element
+        t.append((cost, profit))
+    return t
 
 
 
+budget = 25*10**9
 
-
-
-
-
-
-
-
-budget1 = 25*10**9
-
-def knapSack(budget, wt, val, n):
+def knapSack(wt, val, n):
  
     # Base Case
     if n == 0 or budget == 0:
@@ -448,8 +446,8 @@ def knapSack(budget, wt, val, n):
     # more than Knapsack of capacity W,
     # then this item cannot be included
     # in the optimal solution
-    if (wt[n-1] > W):
-        return knapSack(W, wt, val, n-1)
+    if (wt[n-1] > budget):
+        return knapSack(budget, wt, val, n-1)
  
     # return the maximum of two cases:
     # (1) nth item included
