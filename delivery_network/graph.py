@@ -395,16 +395,62 @@ def routes_from_file(filename):
             line = list(map(int, file.readline().split()))
             city1, city2, gain = line
             routes[i]=(city1,city2, gain)
+    print(routes)
     return routes
 
-def cost_routes(n, trucks): #on veut rajouter le coût pour chaque trajet d'un fichier routes
+#def cost_routes(n, trucks): #on veut rajouter le coût pour chaque trajet d'un fichier routes
                             #on va le faire pour un fichier trucks donnés + il serait pas mal de savoir quel camion coüvre le teajet (indice du camion dans la liste des camions)
     
 
 
+# trier la base trucks 2, croissance sur les couts
+
+#def pre_knapsack():
+
+def optimized_truck(liste_truck, power_min): # liste_truck is sorted by power
+    good_truck = liste_truck[0]
+    i = 0
+    while good_truck[0] < power_min:
+        i += 1
+        good_truck = liste_truck[i]
+    return(good_truck)
 
 
-def pre_knapsack():
+
+def stupid_solution(graphe_filename,route_filename,truck_filename):
+    my_B = B
+    G = graph_from_file(graphe_filename)
+    list_routes = route_from_file(route_filename)
+    list_trucks = truck_from_file(truck_filename)
+    list_trucks.sort()
+    list_path,list_powermin,list_profit = [],[],[]
+    list_trucks_affected = []
+    for route in list_routes:
+        src,dest,profit = route
+        path,power_min = new_minpower(G, src, dest)
+        list_path.append(path)
+        list_powermin.append(power_min)
+        list_profit.append(profit)
+    for i in range(len(list_powermin)):
+        if not my_B >= 0:
+            return("lack money")
+        good_truck = optimized_truck(list_trucks, list_powermin[i])
+        my_B -= good_truck[1]
+        list_trucks_affected.append(good_truck)
+    profit_total = sum(list_profit)
+    return(list_trucks_affected, profit_total)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 budget1 = 25*10**9
