@@ -407,7 +407,8 @@ def routes_from_file(filename):
 
 #def pre_knapsack():
 
-def optimized_truck(liste_truck, power_min): # liste_truck is sorted by power
+
+def optimized_truck(liste_truck, power_min): # liste_truck has already been sorted by power
     good_truck = liste_truck[0]
     i = 0
     while good_truck[0] < power_min:
@@ -415,33 +416,15 @@ def optimized_truck(liste_truck, power_min): # liste_truck is sorted by power
         good_truck = liste_truck[i]
     return(good_truck)
 
-
-
-def data(graphe_filename,route_filename,truck_filename):
-    my_B = B
-    G = graph_from_file(graphe_filename)
-    list_routes = route_from_file(route_filename)
-    list_trucks = truck_from_file(truck_filename)
-    list_trucks.sort()
-    list_path,list_powermin,list_profit = [],[],[]
+def truck_affectation(G,list_route,list_trucks): # we create before the kruskal graph of the network corresponding to the route file
+    list_trucks.sort() #We sort the trucks by the first argument which is the power
     list_trucks_affected = []
-    for route in list_routes:
+    for route in list_route: #For each route, we will identify the cheapest truck to do it
         src,dest,profit = route
         path,power_min = new_minpower(G, src, dest)
-        list_path.append(path)
-        list_powermin.append(power_min)
-        list_profit.append(profit)
-    for i in range(len(list_powermin)):
-        if not my_B >= 0:
-            return("lack money")
-        good_truck = optimized_truck(list_trucks, list_powermin[i])
-        my_B -= good_truck[1]
-        list_trucks_affected.append(good_truck)
-    profit_total = sum(list_profit)
-    return(list_trucks_affected, profit_total)
-
-
-
+        good_truck = optimized_truck(list_trucks, power_min)
+        list_trucks_affected.append([good_truck, route])
+    return(list_trucks_affected)
 
 
 
