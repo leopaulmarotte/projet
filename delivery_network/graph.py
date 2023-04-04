@@ -129,7 +129,7 @@ class Graph:
 
 
 # Question 3
-# Complexity in O(E * log(E))
+# Complexity in O(efefE * log(E))
 
     def get_path_with_power(self, src, dest, power):
         visited_nodes = {node : False for node in self.nodes} # We need to know which nodes have already been visited
