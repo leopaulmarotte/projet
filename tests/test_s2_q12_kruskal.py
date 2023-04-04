@@ -8,13 +8,13 @@ from time import perf_counter
 
 #on crée un grapghe nous-mêmes car les graghes donnés sont soit trop simples, soit trop compliqués
 
-g = Graph([1, 2, 3, 4, 5])
+g2 = Graph([1, 2, 3, 4, 5])
 
-g.add_edge(1,2,2)
-g.add_edge(1,3,1)
-g.add_edge(2,3,3)
-g.add_edge(3,4,2)
-g.add_edge(4,5,1)
+g2.add_edge(1,2,2)
+g2.add_edge(1,3,1)
+g2.add_edge(2,3,3)
+g2.add_edge(3,4,2)
+g2.add_edge(4,5,1)
 
 
 
@@ -22,7 +22,6 @@ g1 = graph_from_file("input/network.4.in")
 g1.kruskal
 
 
-#print(new_minpower(g, 3, 2))
 
 #le résultat est cohérent
 
