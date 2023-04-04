@@ -17,13 +17,17 @@ g.kruskal
 
 list_routes = routes_from_file("input/routes.1.in")
 list_trucks = trucks_from_file("input/trucks.1.in")
-t1 = ti
+t1 = time.perf_counter()
 t = truck_affectation(g, list_routes, list_trucks)
-print(t)
-#t1 = truck_affectation_ks(t)
+t2 = time.perf_counter()
+print(t2-t1)
+t3 = time.perf_counter()
+t1 = truck_affectation_ks(t)
+t4 = time.perf_counter()
+print(t4-t3)
 
-
-
-
-#print(knapsack(t1, 25*10**9))
+t5 = time.perf_counter()
+print(knapsack(t1, 25*10**9))
+t6 = time.perf_counter()
+print(t6 - t5)
 

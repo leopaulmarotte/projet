@@ -457,9 +457,6 @@ def knapsack(rtaks, budget):
     # (1) nth item included
     # (2) not included
     else:
-        #print(rtaks)
         a = rtaks.pop()
-        #print(a)
-        
-        #print(len(rtaks))
+        print(a)
         return max(a[1] + knapsack(rtaks, budget - a[0]), knapsack(rtaks, budget))
