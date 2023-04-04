@@ -1,6 +1,8 @@
 import sys 
 sys.path.append("delivery_network")
-from graph import Graph, union_find, graph_from_file, node_objet, queue, bfs, new_minpower
+from graph import Graph, graph_from_file, time_estimation, union_find
+from graph import  trucks_from_file, routes_from_file, optimized_truck, truck_affectation, truck_affectation_ks
+from graph import knapsack
 import time
 from time import perf_counter
 
@@ -16,7 +18,10 @@ g.add_edge(4,5,1)
 
 
 
-#g1 = graph_from_file("input/network.1.in")
+g1 = graph_from_file("input/network.4.in")
+g1.kruskal
+print(g1)
+
 
 #print(new_minpower(g, 3, 2))
 
@@ -35,9 +40,9 @@ def new_time_estimation(n):
             opti = new_minpower(g, node1, node2)
             t2 = time.perf_counter()
             time_est += (t2-t1)
-    print((a/10)*time_est)       
+    #print((a/10)*time_est)       
 
-new_time_estimation(4)
+#new_time_estimation(4)
 # on met au max 1 seconde pour calculer la puissance minimale qu'il faut pour un trajet donné, quelle que soit la base de données.
 
 
