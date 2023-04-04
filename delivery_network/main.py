@@ -1,6 +1,6 @@
 from graph import Graph, graph_from_file, time_estimation, union_find, bfs,  new_minpower_aux
 from graph import  trucks_from_file, routes_from_file, optimized_truck, truck_affectation, truck_affectation_ks
-from graph import knapsack
+from graph import knapsack, node_objet, queue
 import time
 from time import perf_counter
 
