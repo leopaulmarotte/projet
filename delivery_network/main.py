@@ -13,11 +13,13 @@ from time import perf_counter
 
 g = graph_from_file("input/network.4.in")
 g.kruskal
+print(g)
+print(g.nodes)
 
 
 list_routes = routes_from_file("input/routes.4.in")
 list_routes1 = list_routes[:50]
-print(list_routes1)
+#print(list_routes1)
 list_trucks = trucks_from_file("input/trucks.1.in")
 t1 = time.perf_counter()
 t = truck_affectation(g, list_routes1, list_trucks)
@@ -29,7 +31,7 @@ t4 = time.perf_counter()
 #print(t4-t3)
 
 t5 = time.perf_counter()
-print(knapsack(t1, 25*10**9))
+#print(knapsack(t1, 25*10**9))
 t6 = time.perf_counter()
 #print(t6 - t5)
 
