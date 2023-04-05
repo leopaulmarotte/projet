@@ -355,7 +355,7 @@ def time_estimation(n):
             g = graph_from_file("input/network." + str(n) + ".in")
             t1 = time.perf_counter()
 
-            opti = g.min_power_optimized(node1,node2)
+            opti = g.min_power(node1,node2)
             t2 = time.perf_counter()
             time_est += (t2-t1)
             print(time_est)
