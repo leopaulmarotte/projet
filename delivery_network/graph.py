@@ -422,6 +422,7 @@ def truck_affectation_ks(trucks_affected): # for the knapsack algorithm we just 
 #rtaks = resultat truck affectation ks
 
 
+
 def knapsack(rtaks, budget):
     if len(rtaks) == 0 or budget == 0:
         return 0
