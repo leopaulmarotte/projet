@@ -441,6 +441,20 @@ def truck_affectation(G,list_route,list_trucks):
 
 
 def knapsack_cost(G,list_trucks, list_route, my_B):
+
+#INPUT : 
+#G, list_trucks, list_route : exactly the same as in truck_affection
+#my_B which is an integer coding our budget
+
+#OUTPUT : 
+#selected_itineraries : a list of the selected itineraries coding exactly as in #truck_affection : a 3-uplet with 
+                      # the good truck (a 2-uplet), the route (a 3-uplet) #and an integer for the power_min
+
+#not_selected_itineraries :  which is a list of the itineraries that have not #been selected by our 
+                            # algorithm : the elements are coding exactly like in #the selected_itineraries
+#2 integers : the total_cost which is the amount of money spent to buy #our trucks and total_profit which is 
+                # the profit made by doing the #selected itineraries.
+
     list_trucks = only_useful_truck(list_trucks)
      #We have our budjet, to not delete the initial value
     total_cost = 0 #At the beginning, nothing was buy so our total cost is null
