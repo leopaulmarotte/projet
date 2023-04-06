@@ -423,29 +423,51 @@ def truck_affectation_ks(trucks_affected): # for the knapsack algorithm we just 
 
 
 
-def knapsack(rtaks, budget): #permet de calculer le profit réalisé 
+def knapsack1(rtaks, budget, t ): #permet de calculer le profit réalisé 
+    if len(rtaks) == 0 or budget == 0:
+        return (0, t)
+ 
+    
+    if (rtaks[len(rtaks)-1][0] > budget):
+        rtaks.pop()
+        return (knapsack1(rtaks, budget),t)
+ 
+    else:
+        rtaks_copy1 = rtaks.copy()
+        rtaks_copy2 = rtaks.copy()
+        rtaks_copy4 = rtaks.copy()
+        a = rtaks.pop()
+        rtaks_copy3 = rtaks.copy()
+        
+        if a[1] + knapsack1(rtaks, budget - a[0], t)[0] > knapsack1(rtaks_copy1, budget, t)[0] :
+            t.append(a)
+            return (a[1] + knapsack1(rtaks_copy3, budget - a[0], t)[0], t)
+        else :
+            return (knapsack1(rtaks_copy4, budget, t), t)
+
+
+
+def knapsack2(rtaks, budget, n):
+    if n == 2 or budget == 0:
+        return 0
+
+    if (rtaks[n-1][0] > budget):
+        return knapsack2(rtaks, budget, n-1)
+
+    else:
+        print(n)
+        return max(rtaks[n-1][1] + knapsack2(rtaks, budget-rtaks[n-1][0], n-1),knapsack2(rtaks, budget, n-1))
+
+def knapsack3(rtaks, budget): #permet de calculer le profit réalisé 
     if len(rtaks) == 0 or budget == 0:
         return 0
  
     
     if (rtaks[len(rtaks)-1][0] > budget):
         rtaks.pop()
-        return knapsack(rtaks, budget)
+        return knapsack3(rtaks, budget)
  
     else:
+        rtaks_copy = rtaks.copy()
         a = rtaks.pop()
-        return max(a[1] + knapsack(rtaks, budget - a[0]), knapsack(rtaks, budget))
-
-def knapsack2(rtaks, budget, n):
-    if n == 0 or budget == 0:
-        return 0
- 
-
-    if (rtaks[n-1][0] > budget):
-        return knapsack2(rtaks, budget, n-1)
- 
-    else:
-        return max(
-            rtaks[n-1][1] + knapsack2(rtaks,
-                budget-rtaks[n-1][0], n-1),
-            knapsack2(rtaks, budget, n-1))
+        return max(a[1] + knapsack3(rtaks, budget - a[0]), knapsack3(rtaks_copy, budget))
