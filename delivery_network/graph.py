@@ -238,20 +238,26 @@ class Graph:
 # Question 12
 
     def kruskal(self):
-        g_mst = Graph(range(1,self.nb_nodes+1)) # Initialization of our mst
+        g_mst = Graph(range(1,self.nb_nodes+1))        # Initialization of our mst
         mst_union_find = union_find({})
         mst_union_find.make_set(list(self.nodes)) # Initialization of our union-find structure to know if another edge create a cycle or not
         edge_list = []
+        
         for node1 in self.graph:
             for node2 in self.graph[node1]:
                 node2,power_1_2 = node2[0],node2[1]
                 edge = [power_1_2,min(node1,node2),max(node1,node2)]
-                print(edge)
+                
                 if not edge in edge_list:
                     edge_list.append(edge)  
-        sorted_edge_list = sorted(edge_list) # We have collected all the edges and make sure we did not take a edge twice, and sorted them by power
+        for node in self.graph:
+            for connected_node, power, dist in g.graph[node]:
+                edges.append((power,node,connected_node))
+        sorted_edges = sorted(edges, key=lambda l: l[0])
+         # We have collected all the edges and make sure we did not take a edge twice, and sorted them by power
         for edge in sorted_edge_list:
             power,node1,node2 = edge
+            print(power)
             if mst_union_find.find(node1) != mst_union_find.find(node2): # We added the edges only if it does not create a cycle
                 g_mst.add_edge(node1, node2, power)
                 mst_union_find.op_union(node1, node2)
