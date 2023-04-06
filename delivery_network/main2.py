@@ -19,3 +19,5 @@ graph.add_edge(7, 8, 12)
 print(graph.m_graph)
 
 print(graph.kruskals_mst())
+
+#en gros ça renvoie une liste de listes : première sous-liste = node 1, deuxième sous-liste : nod 2 etc...
