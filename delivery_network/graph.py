@@ -68,6 +68,7 @@ class Graph:
         self.nb_nodes = len(nodes)
         self.nb_edges = 0
         self.list_edges = []
+    
 
     def __str__(self):
         if not self.graph:
@@ -129,7 +130,7 @@ class Graph:
 
 
 # Question 3
-# Complexity in O(efefE * log(E))
+# Complexity in O(E * log(E))
 
     def get_path_with_power(self, src, dest, power):
         visited_nodes = {node : False for node in self.nodes} # We need to know which nodes have already been visited
@@ -237,22 +238,20 @@ class Graph:
 
 # Question 12
 
-    def kruskal(self):
-        list_edges = self.list_edges
-        i = 0
-        g_mst = Graph(range(1,self.nb_nodes+1)) # Initialization of our mst
-        mst_union_find = union_find({})
-        mst_union_find.make_set(list(self.nodes)) # Initialization of our union-find structure to know if another edge create a cycle or not
-        list_edges.sort(key=lambda l : l[2]) # We have collected all the edges and make sure we did not take a edge twice, and sorted them by power
-        while g_mst.nb_edges != self.nb_nodes-1:
-            node1,node2,power = list_edges[i]
-            i += 1
-            if mst_union_find.find(node1) != mst_union_find.find(node2): # We added the edges only if it does not create a cycle
-                g_mst.add_edge(node1, node2, power)
-                mst_union_find.op_union(node1, node2)
-        return(g_mst)
-        
-
+def kruskal(G):
+    list_edges = G.list_edges
+    i = 0
+    g_mst = Graph(range(1,G.nb_nodes+1)) # Initialization of our mst
+    mst_union_find = union_find({})
+    mst_union_find.make_set(list(G.nodes)) # Initialization of our union-find structure to know if another edge create a cycle or not
+    list_edges.sort(key=lambda l : l[2]) # We have collected all the edges and make sure we did not take a edge twice, and sorted them by power
+    while g_mst.nb_edges != G.nb_nodes-1:
+        node1,node2,power = list_edges[i]
+        i += 1
+        if mst_union_find.find(node1) != mst_union_find.find(node2): # We added the edges only if it does not create a cycle
+            g_mst.add_edge(node1, node2, power)
+            mst_union_find.op_union(node1, node2)
+    return(g_mst)
 
 
 # Question 13
@@ -263,6 +262,14 @@ class Graph:
 
 
 # Question 14
+
+
+    def min_power_optimized(self, src, dest):
+        g_mst = self.kruskal()
+        return g_mst.min_power(src,dest) # We know that it only works with small graphs : we will improve it
+
+
+# Question 16
 
 # We do first a breadth-first search using a queue-structure in order to give a depth to each node of the mst
 def bfs(G):
@@ -311,12 +318,8 @@ def new_minpower_aux(g_mst, src, dest): #main function but with the g_mst so tha
     return(path,power_min) #We return the path and the power_min needed for that path
     
 def new_minpower(G,src,dest): #The final function
-    g_mst = G.kruskal()
+    g_mst = kruksal(G)
     return new_minpower_aux(g_mst, src, dest)
-
-
-
-
 
 # Question 1 
 
@@ -327,7 +330,7 @@ def graph_from_file(filename):
     with open(filename, "r") as file:
         n, m = map(int, file.readline().split())
         g = Graph(range(1, n+1))
-        for i in range(m):
+        for _ in range(m):
             edge = list(map(int, file.readline().split()))
             if len(edge) == 3:
                 node1, node2, power_min = edge
@@ -348,144 +351,107 @@ def time_estimation(n):
         src = []
         dest = []
         a = map(int, file.readline().split()) # We save the amount of itineraries
+        g = graph_from_file("input/network." + str(n) + ".in")
+        g_mst = g.kruskal()
         for i in range(10): # Average with 10 itineraries
             node1,node2,p = map(int, file.readline().split())
-            g = graph_from_file("input/network." + str(n) + ".in")
             t1 = time.perf_counter()
-
-            opti = g.min_power(node1,node2)
+            opti = new_minpower_aux(g_mst, node1, node2)
             t2 = time.perf_counter()
             time_est += (t2-t1)
             print(time_est)
     return(((list(a)[0])/10)*time_est)
  
 
+# Séance 4
 
 
 
 
-# LES CAMIONS
+# Question 18
 
-def trucks_from_file(filename):
-
+def route_from_file(filename):
+    itineraries = []
     with open(filename, "r") as file:
-        n = int(file.readline())
-        trucks = [(0,0)]*n
-        for i in range(n):
-            line = list(map(int, file.readline().split()))
-            power, cost = line
-            trucks[i]=(power,cost)
-    return trucks
+        nb_itinerary = int(file.readline())
+        for _ in range(nb_itinerary):
+            src,dest,profit = map(int, file.readline().split())
+            itineraries.append((src,dest,profit))
+    return(itineraries)
 
-def routes_from_file(filename):
+def truck_from_file(filename):
+    trucks = []
     with open(filename, "r") as file:
-        n = int(file.readline())
-        routes = [(0,0,0)]*n
-        for i in range(n):
-            line = list(map(int, file.readline().split()))
-            city1, city2, gain = line
-            routes[i]=(city1,city2, gain)
-    return routes
+        nb_models = int(file.readline())
+        for _ in range(nb_models):
+            power,cost = map(int, file.readline().split())
+            trucks.append((power,cost))
+    return(trucks)
+
+def optimized_truck(liste_truck, power_min): # liste_truck is sorted by power : we process by dichotomic search
+    left, right = 0, (len(liste_truck)-1)
+    while left != right:
+        middle = (left+right)//2
+        truck_applicant = liste_truck[middle]
+        if truck_applicant[0] >= power_min:
+            right = middle
+        else:
+            left = middle + 1
+    if liste_truck[right][0] >= power_min:
+        return(liste_truck[right])
+    else:
+        return([None,None])
+    
+def only_useful_truck(list_trucks): # To remove useless trucks : those with higher cost thant other but less powerful
+    list_trucks.sort(key=lambda only_useful_truck : only_useful_truck[1]) #We sort the list_truck by cost
+    useful_trucks = []
+    moving_power = 0 #it will be the power of the different truck
+    for truck in list_trucks:
+        if moving_power < truck[0]: #We don't take the truck if the power is lower than the former one (whose the cost whose lower due to the sort)
+            useful_trucks.append(truck)
+            moving_power = truck[0]
+    return(useful_trucks)
 
 
-def optimized_truck(liste_truck, power_min): # liste_truck has already been sorted by power
-    good_truck = liste_truck[0]
-    i = 0
-    while good_truck[0] < power_min:
-        i += 1
-        good_truck = liste_truck[i]
-    return(good_truck)
 
-def truck_affectation(G,list_route,list_trucks): # we create before the kruskal graph G of the network corresponding to the route file
+def truck_affectation(G,list_route,list_trucks):
     list_trucks.sort() #We sort the trucks by the first argument which is the power
+    list_powermin = []
     list_trucks_affected = []
+    list_trucks = only_useful_truck(list_trucks)
+    kruskal(G)
     for route in list_route: #For each route, we will identify the cheapest truck to do it
         src,dest,profit = route
         path,power_min = new_minpower_aux(G, src, dest)
-        #print(power_min)
-        good_truck = optimized_truck(list_trucks, power_min)
-        #print(good_truck)
-        list_trucks_affected.append(good_truck + route) 
-    return(list_trucks_affected) #we return 5 elements : power, cost, city 1, city 2, profit
+        list_powermin.append(power_min)
+    for i in range(len(list_powermin)):
+        good_truck = optimized_truck(list_trucks, list_powermin[i])
+        list_trucks_affected.append([good_truck, list_route[i], list_powermin[i]])
+    return(list_trucks_affected)
 
-def truck_affectation_ks(trucks_affected): # for the knapsack algorithm we just need the cost and profit of the trucks affectation
-    t = []
-    for element in trucks_affected :
-        power, cost, city1, city2, profit = element
-        t.append((cost, profit))
-    return t
-
-
-
-#rtaks = resultat truck affectation ks
-
-
-def knapsack1(rtaks, budget, t ): #permet de calculer le profit réalisé 
-    if len(rtaks) == 0 or budget == 0:
-        return (0, t)
- 
-    
-    if (rtaks[len(rtaks)-1][0] > budget):
-        rtaks.pop()
-        return (knapsack1(rtaks, budget),t)
- 
-    else:
-        rtaks_copy1 = rtaks.copy()
-        rtaks_copy2 = rtaks.copy()
-        rtaks_copy4 = rtaks.copy()
-        a = rtaks.pop()
-        rtaks_copy3 = rtaks.copy()
-        
-        if a[1] + knapsack1(rtaks, budget - a[0], t)[0] > knapsack1(rtaks_copy1, budget, t)[0] :
-            t.append(a)
-            return (a[1] + knapsack1(rtaks_copy3, budget - a[0], t)[0], t)
-        else :
-            return (knapsack1(rtaks_copy4, budget, t), t)
-
-
-
-def knapsack2(rtaks, budget, n):
-    if n == 2 or budget == 0:
-        return 0
-
-    if (rtaks[n-1][0] > budget):
-        return knapsack2(rtaks, budget, n-1)
-
-    else:
-        print(n)
-        return max(rtaks[n-1][1] + knapsack2(rtaks, budget-rtaks[n-1][0], n-1),knapsack2(rtaks, budget, n-1))
-
-def knapsack3(rtaks, budget, t): #permet de calculer le profit réalisé 
-    if len(rtaks) == 0 or budget == 0:
-        print(len(rtaks))
-        return 0
- 
-    
-    if (rtaks[len(rtaks)-1][0] > budget, t):
-        rtaks.pop()
-        return knapsack3(rtaks, budget, t)
- 
-    else:
-        a = rtaks.pop()
-        rtaks_copy = rtaks.copy()
-        return (t +  [max(a[1] + knapsack3(rtaks, budget - a[0], t), knapsack3(rtaks_copy, budget, t))])
-    return t
-
-
-
-def knapSack(W, wt, val, n, rtaks):
-    K = [[0 for x in range(W + 1)] for x in range(n + 1)]
-
-    for i in range(n + 1):
-        for w in range(W + 1):
-            if i == 0 or w == 0:
-                K[i][w] = 0
-            elif wt[i-1] <= w:
-                K[i][w] = max(val[i-1]
-                              + K[i-1][w-wt[i-1]],
-                              K[i-1][w])
+def knapsack(G,list_trucks, list_route, my_B):
+         #We have our budget, to not delete the initial value
+    total_cost = 0 #At the beginning, nothing was buy so our total cost is null
+    list_trucks_affected = truck_affectation(G, list_route, list_trucks) #for each route, we associate it the truck with the less power but enough powerful to do it (which is by doing so the cheapest truck thanks to only_useful_truck)
+    list_efficency = [] #a list of efficency corresponding to the quotient of the profit of a route by the cost of the associated truck
+    selected_itineraries = [] #only the routes with the highest efficency will be selected
+    list_profit = []
+    for association in list_trucks_affected: #We create the list of efficency
+        utility, cost, profit = association[1][2],association[0][1],association[1][2]
+        efficency = utility/cost
+        list_efficency.append((efficency,association))
+    list_efficency.sort(reverse=True) #We sort it by descending in order to have the highest efficency at the beginning
+    for index_itinerary in range(len(list_efficency)):
+        if list_efficency[index_itinerary][0] != [None,None]:
+            cost = list_efficency[index_itinerary][1][0][1]
+            association = list_efficency[index_itinerary][1][0:3]
+            profit = association[1][2]
+            if cost + total_cost < my_B: #We add a route by descending efficency and only if it is in our budget : maybe there is further a route with a lower profit but which need a truck which is still in our budget
+                selected_itineraries.append(association) 
+                list_profit.append(profit)
+                total_cost += cost #We actualize our spendings
             else:
-                K[i][w] = K[i-1][w]
- 
-    return K[n][W]
-
+                selected_itineraries.append(None) 
+                list_profit.append(0)
+    total_profit = sum(list_profit)
+    return(selected_itineraries, total_cost, total_profit)
