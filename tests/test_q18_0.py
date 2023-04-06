@@ -9,11 +9,11 @@ from time import perf_counter
 g = graph_from_file("input/network.3.in")
 g = kruskal(g)
 
-list_routes = route_from_file("input/routes.1.in")
+list_routes = route_from_file("input/routes.3.in")
 list_routes1 = list_routes[:20]                 # we have some issues with the amount of time truck_affectation takes
                                                 # therefore we will only work with a truncated list for the big networks
                                                 
-list_trucks = truck_from_file("input/trucks.1.in")
+list_trucks = truck_from_file("input/trucks.2.in")
 print(len(list_trucks))
 list_trucks = only_useful_truck(list_trucks)    # we can notice that there was in fact 9815 useless trucks in list_trucks  
                                                 # they are trucks more expensive than more powerful one

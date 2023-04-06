@@ -236,8 +236,8 @@ class Graph:
 
 # Question 14
 
-def min_power_optimized(self, src, dest):
-        g_mst = self.kruskal()
+    def min_power_optimized(g, src, dest):
+        g_mst = kruskal(g)
         return g_mst.min_power(src,dest)
 
 

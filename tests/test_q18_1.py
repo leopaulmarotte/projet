@@ -14,7 +14,7 @@ B2 = 1000000
 g = graph_from_file("input/network.3.in")
 g = kruskal(g)
 
-list_routes = route_from_file("input/routes.1.in")
+list_routes = route_from_file("input/routes.3.in")
 list_routes1 = list_routes[:20]                 
                                                 
 list_trucks = truck_from_file("input/trucks.2.in")
@@ -25,16 +25,16 @@ t3 = time.perf_counter()
 h = knapsack_cost(g, list_trucks, list_routes1, B)      # the function knapsack takes 11 seconds too, because
                                                         # it uses the function truck_affectation.
 t4 = time.perf_counter()
-print(h)    # we display the results 
-print(t4 - t3)
+#print(h)    # we can display the results to see the the differents combinations of trucks to use
+print("le temps de calcul de notre algorithme de sac à dos est", (t4 - t3))
 
 profit = h[-1]
-print(profit)
+print("le profit avec un budget de", B ,"est", profit)
 s = 0
 for i in  list_routes1: # this iterative function calculates the maximum profit we can make 
                         # with the different routes we have
     s = s + i[2]
-print(s)
+print("le profit maximal est", s)
 
 # the last term in the list returned by our function knapsack_cost is the profit
 # we compare it with the maximum profit we can make
@@ -43,7 +43,9 @@ print(s)
 # therefore we are not limited by it and we can find a truck for each routes
 
 h2 = knapsack_cost(g, list_trucks, list_routes1, B2)
-print(h2)
+#print(h2) 
+profit2 = h2[-1]
+print("le profit avec un budget de",  B2, "est", profit2)
 
 # we try the function knapsack with a budget around the trucks prices scale
 # this time the profit returned by knapsasck_cost is 26460

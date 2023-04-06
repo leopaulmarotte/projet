@@ -16,7 +16,7 @@ B2 = 1000000
 g = graph_from_file("input/network.3.in")
 g = kruskal(g)
 
-list_routes = route_from_file("input/routes.1.in")
+list_routes = route_from_file("input/routes.3.in")
 list_routes1 = list_routes[:20]                 
                                                 
 list_trucks = truck_from_file("input/trucks.2.in")
@@ -29,8 +29,8 @@ t4 = time.perf_counter()
 h2 = knapsack_efficiency(g, list_trucks, list_routes1, B2)
 t5 = time.perf_counter()
 
-print(h1)
-print(h2)
+print("le profit possible selon knapsack_stock est", h1[-1])
+print("le profit possible selon knapsack_efficiency est", h2[-1])
 
 # we compare the profit found by the two functions
 # knapsack_cost finds a way to make a profit of 26640 (it is the same result as found in test_q18_1 since we used the same parameters)
