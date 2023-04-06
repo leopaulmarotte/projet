@@ -29,29 +29,20 @@ truck = truck_affectation(g, list_routes, list_trucks)
 truck1 = truck_affectation_ks(truck)
 #t4 = time.perf_counter()
 truck2 = truck1[:5]
+print(truck2)
 #print(t4-t3)
 #print(t1)
 n = len(truck1)
-print(len(truck2))
-t = []
 #t5 = time.perf_counter()
 #print(knapsack2(truck2, 25*10**9, n))
 #print(knapsack1(truck2, 25*10**9, t))
 #print(knapsack3(truck2,25*10**9, t))
 #t6 = time.perf_counter()
 #print(t6 - t5)
-s = 0
-for i in truck2:
-    s = s + i[1]
+#s = 0
+#for i in truck2:
+    #s = s + i[1]
     #print(s)
+t = []
+print(knapsack3(truck2, 25*10**9, t))
 
-#cohérent
-
-val = []
-wt = []
-for i in truck2:
-    val.append(i[1])
-    wt.append(i[0])
-print(val, wt)
-
-print(knapSack(25*10**9, wt, val, 5))
