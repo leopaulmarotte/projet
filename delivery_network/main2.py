@@ -16,6 +16,6 @@ graph.add_edge(4, 5, 1)
 graph.add_edge(5, 7, 3)
 graph.add_edge(6, 8, 5)
 graph.add_edge(7, 8, 12)
-print(graph)
+print(graph.m_graph)
 
 print(graph.kruskals_mst())
