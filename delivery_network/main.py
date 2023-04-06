@@ -1,6 +1,6 @@
 from graph import Graph, graph_from_file, time_estimation, union_find, bfs,  new_minpower_aux, knapsack2
 from graph import  trucks_from_file, routes_from_file, optimized_truck, truck_affectation, truck_affectation_ks
-from graph import knapsack1, node_objet, queue, knapsack3
+from graph import knapsack1, node_objet, queue, knapsack3, knapSack
 import time
 from time import perf_counter
 
@@ -37,7 +37,7 @@ t = []
 #t5 = time.perf_counter()
 #print(knapsack2(truck2, 25*10**9, n))
 #print(knapsack1(truck2, 25*10**9, t))
-print(knapsack3(truck2,25*10**9, t))
+#print(knapsack3(truck2,25*10**9, t))
 #t6 = time.perf_counter()
 #print(t6 - t5)
 s = 0
@@ -47,4 +47,11 @@ for i in truck2:
 
 #cohérent
 
+val = []
+wt = []
+for i in truck2:
+    val.append(i[1])
+    wt.append(i[0])
+print(val, wt)
 
+print(knapSack(25*10**9, wt, val, 5))
