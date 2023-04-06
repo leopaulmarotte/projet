@@ -19,32 +19,31 @@ g.kruskal
 
 list_routes = routes_from_file("input/routes.1.in")
 #list_routes1 = list_routes[:50]
-
 list_trucks = trucks_from_file("input/trucks.1.in")
-
-t1 = time.perf_counter()
+#t1 = time.perf_counter()
 truck = truck_affectation(g, list_routes, list_trucks)
 #print(t)
-t2 = time.perf_counter()
+#t2 = time.perf_counter()
 #print(t2-t1)
-t3 = time.perf_counter()
+#t3 = time.perf_counter()
 truck1 = truck_affectation_ks(truck)
-t4 = time.perf_counter()
-truck2 = truck1[:50]
+#t4 = time.perf_counter()
+truck2 = truck1[:5]
 #print(t4-t3)
 #print(t1)
 n = len(truck1)
+print(len(truck2))
 t = []
-t5 = time.perf_counter()
+#t5 = time.perf_counter()
 #print(knapsack2(truck2, 25*10**9, n))
-print(knapsack1(truck2, 25*10**9, t))
-#print(knapsack3(truck2,25*10**9))
-t6 = time.perf_counter()
+#print(knapsack1(truck2, 25*10**9, t))
+print(knapsack3(truck2,25*10**9, t))
+#t6 = time.perf_counter()
 #print(t6 - t5)
 s = 0
-for i in  truck2:
+for i in truck2:
     s = s + i[1]
-print(s)
+    #print(s)
 
 #cohérent
 

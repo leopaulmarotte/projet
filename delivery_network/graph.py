@@ -458,16 +458,18 @@ def knapsack2(rtaks, budget, n):
         print(n)
         return max(rtaks[n-1][1] + knapsack2(rtaks, budget-rtaks[n-1][0], n-1),knapsack2(rtaks, budget, n-1))
 
-def knapsack3(rtaks, budget): #permet de calculer le profit réalisé 
+def knapsack3(rtaks, budget, t): #permet de calculer le profit réalisé 
     if len(rtaks) == 0 or budget == 0:
+        print('hello')
+        print(len(rtaks))
         return 0
  
     
-    if (rtaks[len(rtaks)-1][0] > budget):
+    if (rtaks[len(rtaks)-1][0] > budget, t):
         rtaks.pop()
-        return knapsack3(rtaks, budget)
+        return knapsack3(rtaks, budget, t)
  
     else:
-        rtaks_copy = rtaks.copy()
         a = rtaks.pop()
-        return max(a[1] + knapsack3(rtaks, budget - a[0]), knapsack3(rtaks_copy, budget))
+        rtaks_copy = rtaks.copy()
+        return t +  [max(a[1] + knapsack3(rtaks, budget - a[0], t), knapsack3(rtaks_copy, budget, t))]
