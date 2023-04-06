@@ -234,6 +234,11 @@ class Graph:
         else:
             return binary_search(self,power_list)
 
+# Question 14
+
+def min_power_optimized(self, src, dest):
+        g_mst = self.kruskal()
+        return g_mst.min_power(src,dest)
 
 
 # Question 12
@@ -258,15 +263,8 @@ def kruskal(G):
 
 # There are already 2 tests implemented
 # g.kruskal() instead of doing kruskal(g) as it was previously computed
-# We implemented a new graph "my_network.06.py" whish successfuly passed the test
+# We implemented a new graph "my_network.06.py" which successfuly passed the test
 
-
-# Question 14
-
-
-    def min_power_optimized(self, src, dest):
-        g_mst = self.kruskal()
-        return g_mst.min_power(src,dest) # We know that it only works with small graphs : we will improve it
 
 
 # Question 16
@@ -350,17 +348,16 @@ def time_estimation(n):
         time_est = 0
         src = []
         dest = []
-        a = map(int, file.readline().split()) # We save the amount of itineraries
+        a = int(file.readline()) # We save the amount of itineraries
         g = graph_from_file("input/network." + str(n) + ".in")
-        g_mst = g.kruskal()
         for i in range(10): # Average with 10 itineraries
             node1,node2,p = map(int, file.readline().split())
             t1 = time.perf_counter()
-            opti = new_minpower_aux(g_mst, node1, node2)
+            opti = g.min_power(node1, node2)
             t2 = time.perf_counter()
             time_est += (t2-t1)
-            print(time_est)
-    return(((list(a)[0])/10)*time_est)
+    print((a/10)*time_est)
+    
  
 
 # Séance 4
