@@ -412,6 +412,19 @@ def only_useful_truck(list_trucks): # To remove useless trucks : those with high
 
 
 def truck_affectation(G,list_route,list_trucks):
+
+#INPUT : 
+#G = a graph from the class graph
+#liste_route = a list with 3-uplets coding each road : a source, a destination and #a profit/utility : [[src1, dest1, profit1], … , [srcn, destin, profitn]]
+#liste_trucks : a list with 2-uplets coding a truck : the power and the cost
+#[[power1, cost1], … , [powern, costn]]
+
+#OUTPUT : 
+#list_truck_affected which is a list with 3 elements : 
+#the good truck coding with the 2-uplet like before
+#the route coding with the 3-uplet like before
+#the value of the power_min for the route
+
     list_trucks.sort() #We sort the trucks by the first argument which is the power
     list_powermin = []
     list_trucks_affected = []
