@@ -1,9 +1,11 @@
 import sys 
 sys.path.append("delivery_network")
 from graph import  Graph, graph_from_file, time_estimation, union_find, kruskal
-from graph import  trucks_from_file, routes_from_file, optimized_truck, truck_affectation, truck_affectation_ks, new_minpower_aux
+from graph import  truck_from_file, route_from_file, optimized_truck,  only_useful_truck, truck_affectation
+from graph import knapsack_cost, knapsack_efficiency
 import time
 from time import perf_counter
+
 
 #on crée un grapghe nous-mêmes car les graghes donnés sont soit trop simples, soit trop compliqués
 

@@ -2,7 +2,7 @@ import sys
 sys.path.append("delivery_network")
 from graph import  Graph, graph_from_file, time_estimation, union_find, kruskal
 from graph import  truck_from_file, route_from_file, optimized_truck,  only_useful_truck, truck_affectation
-from graph import knapsack
+from graph import knapsack_cost, knapsack_efficiency
 import time
 from time import perf_counter
 
@@ -12,7 +12,9 @@ g = graph_from_file("input/network.3.in")
 g = kruskal(g)
 
 list_routes = route_from_file("input/routes.1.in")
-list_routes1 = list_routes[:20]
+list_routes1 = list_routes[:20]                 # we have some issues with the amount of time truck_affectation takes
+                                                # therefore we will only work with a truncated list for the big networks
+                                                
 list_trucks = truck_from_file("input/trucks.1.in")
 print(len(list_trucks))
 list_trucks = only_useful_truck(list_trucks)
@@ -29,17 +31,24 @@ print(t2-t1)                                        # it is consistent with what
 
 
 t3 = time.perf_counter()
-h = knapsack(g, list_trucks, list_routes1, B)       # the function knapsack takes 11 seconds too, because
-                                                    # it uses the function truck_affectation.
+h = knapsack_cost(g, list_trucks, list_routes1, B)      # the function knapsack takes 11 seconds too, because
+                                                        # it uses the function truck_affectation.
 t4 = time.perf_counter()
-print(h)
+print(h)    # we display the results 
 print(t4 - t3)
-#print(t6 - t5)
-s = 0
-for i in  list_routes:
-    s = s + i[2]
-#print(s)
 
-#cohérent
+profit = h[-1]
+print(profit)
+s = 0
+for i in  list_routes1: # this iterative function calculates the maximum profit we can make 
+                        # with the different routes we have
+    s = s + i[2]
+print(s)
+
+# the last term in the list returned by our function knapsack_cost is the profit
+# we compare it with the maximum profit we can make
+# it is logical that they are the same since our budget is way bigger than the cost of the trucks
+# therefore we are not limited by it and we can find a truck for each routes
+
 
 
