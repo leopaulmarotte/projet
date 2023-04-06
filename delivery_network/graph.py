@@ -67,7 +67,7 @@ class Graph:
         self.graph = dict([(n, []) for n in nodes])
         self.nb_nodes = len(nodes)
         self.nb_edges = 0
-    
+        self.list_edges = []
 
     def __str__(self):
         if not self.graph:
@@ -98,7 +98,7 @@ class Graph:
         self.graph[node1].append((node2, power_min, dist)) # We create the edge between node1 and node2
         self.graph[node2].append((node1, power_min, dist))
         self.nb_edges += 1
-
+        self.list_edges.append((node1, node2, power_min))
 
 
 # Question 2
@@ -238,30 +238,21 @@ class Graph:
 # Question 12
 
     def kruskal(self):
-        g_mst = Graph(range(1,self.nb_nodes+1))        # Initialization of our mst
+        list_edges = self.list_edges
+        i = 0
+        g_mst = Graph(range(1,self.nb_nodes+1)) # Initialization of our mst
         mst_union_find = union_find({})
         mst_union_find.make_set(list(self.nodes)) # Initialization of our union-find structure to know if another edge create a cycle or not
-        edge_list = []
-        
-        for node1 in self.graph:
-            for node2 in self.graph[node1]:
-                node2,power_1_2 = node2[0],node2[1]
-                edge = [power_1_2,min(node1,node2),max(node1,node2)]
-                
-                if not edge in edge_list:
-                    edge_list.append(edge)  
-        for node in self.graph:
-            for connected_node, power, dist in g.graph[node]:
-                edges.append((power,node,connected_node))
-        sorted_edges = sorted(edges, key=lambda l: l[0])
-         # We have collected all the edges and make sure we did not take a edge twice, and sorted them by power
-        for edge in sorted_edge_list:
-            power,node1,node2 = edge
-            print(power)
+        list_edges.sort(key=lambda l : l[2]) # We have collected all the edges and make sure we did not take a edge twice, and sorted them by power
+        while g_mst.nb_edges != self.nb_nodes-1:
+            node1,node2,power = list_edges[i]
+            i += 1
             if mst_union_find.find(node1) != mst_union_find.find(node2): # We added the edges only if it does not create a cycle
                 g_mst.add_edge(node1, node2, power)
                 mst_union_find.op_union(node1, node2)
         return(g_mst)
+        
+
 
 
 # Question 13
@@ -336,7 +327,7 @@ def graph_from_file(filename):
     with open(filename, "r") as file:
         n, m = map(int, file.readline().split())
         g = Graph(range(1, n+1))
-        for _ in range(m):
+        for i in range(m):
             edge = list(map(int, file.readline().split()))
             if len(edge) == 3:
                 node1, node2, power_min = edge
@@ -427,7 +418,6 @@ def truck_affectation_ks(trucks_affected): # for the knapsack algorithm we just 
 
 
 #rtaks = resultat truck affectation ks
-
 
 
 def knapsack1(rtaks, budget, t ): #permet de calculer le profit réalisé 
