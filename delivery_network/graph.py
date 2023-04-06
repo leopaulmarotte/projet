@@ -246,6 +246,7 @@ class Graph:
             for node2 in self.graph[node1]:
                 node2,power_1_2 = node2[0],node2[1]
                 edge = [power_1_2,min(node1,node2),max(node1,node2)]
+                print(edge)
                 if not edge in edge_list:
                     edge_list.append(edge)  
         sorted_edge_list = sorted(edge_list) # We have collected all the edges and make sure we did not take a edge twice, and sorted them by power

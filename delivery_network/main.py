@@ -11,7 +11,7 @@ from time import perf_counter
 
 #routes_from_file("input/routes.1.in")
 
-g = graph_from_file("input/network.1.in")
+g = graph_from_file("input/network.2.in")
 print(g.kruskal())
 
 
