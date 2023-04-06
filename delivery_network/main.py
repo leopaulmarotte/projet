@@ -12,8 +12,7 @@ from time import perf_counter
 #routes_from_file("input/routes.1.in")
 
 g = graph_from_file("input/network.1.in")
-g.kruskal
-#print(g)
+print(g.kruskal())
 
 
 
@@ -29,7 +28,7 @@ truck = truck_affectation(g, list_routes, list_trucks)
 truck1 = truck_affectation_ks(truck)
 #t4 = time.perf_counter()
 truck2 = truck1[:5]
-print(truck2)
+#print(truck2)
 #print(t4-t3)
 #print(t1)
 n = len(truck1)
@@ -44,5 +43,5 @@ n = len(truck1)
     #s = s + i[1]
     #print(s)
 t = []
-print(knapsack3(truck2, 25*10**9, t))
+#print(knapsack3(truck2, 25*10**9, t))
 
