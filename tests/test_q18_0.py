@@ -15,8 +15,8 @@ list_routes1 = list_routes[:20]                 # we have some issues with the a
                                                 
 list_trucks = truck_from_file("input/trucks.1.in")
 print(len(list_trucks))
-list_trucks = only_useful_truck(list_trucks)    # we can notice that there was in fact a useless truck in list_trucks :   
-                                                # it is a truck more expensive than another more powerful truck
+list_trucks = only_useful_truck(list_trucks)    # we can notice that there was in fact 9815 useless trucks in list_trucks  
+                                                # they are trucks more expensive than more powerful one
 print(len(list_trucks))
 
 

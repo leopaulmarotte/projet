@@ -467,11 +467,11 @@ def knapsack_efficiency(G,list_trucks, list_route, my_B):
     for association in list_trucks_affected: #We create the list of efficency
         utility, cost, profit = association[1][2],association[0][1],association[1][2]
         efficiency = utility/cost
-        list_efficiency.append((efficency,association))
+        list_efficiency.append((efficiency,association))
     list_efficiency.sort(reverse=True) #We sort it by descending in order to have the highest efficency at the beginning
-    for index_itinerary in range(len(list_efficency)):
+    for index_itinerary in range(len(list_efficiency)):
         if list_efficiency[index_itinerary][0] != [None,None]:
-            cost = list_efficency[index_itinerary][1][0][1]
+            cost = list_efficiency[index_itinerary][1][0][1]
             association = list_efficiency[index_itinerary][1][0:3]
             profit = association[1][2]
             if cost + total_cost < my_B: #We add a route by descending efficency and only if it is in our budget : maybe there is further a route with a lower profit but which need a truck which is still in our budget
