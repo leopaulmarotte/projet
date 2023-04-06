@@ -404,9 +404,9 @@ def truck_affectation(G,list_route,list_trucks): # we create before the kruskal 
     for route in list_route: #For each route, we will identify the cheapest truck to do it
         src,dest,profit = route
         path,power_min = new_minpower_aux(G, src, dest)
-        print(power_min)
+        #print(power_min)
         good_truck = optimized_truck(list_trucks, power_min)
-        print(good_truck)
+        #print(good_truck)
         list_trucks_affected.append(good_truck + route) 
     return(list_trucks_affected) #we return 5 elements : power, cost, city 1, city 2, profit
 
@@ -423,22 +423,29 @@ def truck_affectation_ks(trucks_affected): # for the knapsack algorithm we just 
 
 
 
-def knapsack(rtaks, budget):
+def knapsack(rtaks, budget): #permet de calculer le profit réalisé 
     if len(rtaks) == 0 or budget == 0:
         return 0
  
-    # If weight of the nth item is
-    # more than Knapsack of capacity W,
-    # then this item cannot be included
-    # in the optimal solution
+    
     if (rtaks[len(rtaks)-1][0] > budget):
         rtaks.pop()
-        return knapsack(rtaks)
+        return knapsack(rtaks, budget)
  
-    # return the maximum of two cases:
-    # (1) nth item included
-    # (2) not included
     else:
         a = rtaks.pop()
-        print(a)
         return max(a[1] + knapsack(rtaks, budget - a[0]), knapsack(rtaks, budget))
+
+def knapsack2(rtaks, budget, n):
+    if n == 0 or budget == 0:
+        return 0
+ 
+
+    if (rtaks[n-1][0] > budget):
+        return knapsack2(rtaks, budget, n-1)
+ 
+    else:
+        return max(
+            rtaks[n-1][1] + knapsack2(rtaks,
+                budget-rtaks[n-1][0], n-1),
+            knapsack2(rtaks, budget, n-1))

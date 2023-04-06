@@ -16,14 +16,17 @@ g2.add_edge(2,3,3)
 g2.add_edge(3,4,2)
 g2.add_edge(4,5,1)
 
+g2.kruskal
+print(g2)
+
+#résultat cohérent
 
 
 g1 = graph_from_file("input/network.4.in")
 g1.kruskal
 
+print(g1) # Quel que soit le volume du fichier, le graphe kruskal s'affiche en quelques secondes
 
-
-#le résultat est cohérent
 
 def new_time_estimation(n):
     with open("input/routes." + str(n) + ".in","r") as file:
@@ -38,7 +41,7 @@ def new_time_estimation(n):
             opti = new_minpower_aux(g, node1, node2)
             t2 = time.perf_counter()
             time_est += (t2-t1)
-    #print((a/10)*time_est)       
+    print((a/10)*time_est)       
 
 new_time_estimation(4)
 # on met au max 1 seconde pour calculer la puissance minimale qu'il faut pour un trajet donné, quelle que soit la base de données.
