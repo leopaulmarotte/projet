@@ -48,6 +48,21 @@ def new_time_estimation(n):
             time_est += (t2-t1)
     print((a/10)*time_est)       
 
+def new_time_estimation(n):
+    with open("input/routes." + str(n) + ".in","r") as file:
+        time_est = 0
+        a = int(file.readline()) # We save the amount of itineraries
+        g = graph_from_file("input/network." + str(n) + ".in")
+        g1 = kruskal(g)
+        for i in range(10): # Average with 10 itineraries
+            node1,node2,p = map(int, file.readline().split())
+            t1 = time.perf_counter()
+            #print(t1)
+            opti = new_minpower_aux(g1, node1, node2)
+            t2 = time.perf_counter()
+            time_est += (t2-t1)
+    print((a/10)*time_est)  
+
 new_time_estimation(4)
 # on met au max 1 seconde pour calculer la puissance minimale qu'il faut pour un trajet donné, quelle que soit la base de données.
 
